@@ -10,7 +10,7 @@
   }
 </style>
 <table cellpadding="0" cellspacing="0" border="0" width="100%"
-  style="border-collapse: collapse; font-size: 10px; font-family: {{ design.font_family }}; max-width: 600px; width: 100%; background: linear-gradient(120deg, #f6f8fd 0%, #f1f5f9 100%); border-radius: 16px; padding: 24px;">
+  style="border-collapse: collapse; font-size: 10px; font-family: {{ design.font_family }}; max-width: 600px; width: 100%; {% if background_filename %}background: url('{{ asset_base_url }}/{{ background_filename }}') center/cover no-repeat;{% else %}background: linear-gradient(120deg, #f6f8fd 0%, #f1f5f9 100%);{% endif %} border-radius: 16px; padding: 24px;">
   <tbody>
     <tr>
       <td align="center" style="line-height: 16px; font-family: {{ design.font_family }}; border-collapse: collapse; padding: 16px;">
@@ -19,13 +19,13 @@
           <tbody>
             <tr>
               <td align="left" valign="top" class="responsive-card-padding"
-                style="border-collapse: collapse; padding: 24px; border-radius: 16px 16px 0 0; border: 1px solid rgba(255,255,255,0.7); border-top: 1px solid rgba(255,255,255,0.9); border-bottom: none; background: linear-gradient(145deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.6) 100%); background-color: #ffffff; backdrop-filter: blur(24px); box-shadow: inset 0 1px 1px rgba(255,255,255,1), inset 0 0 20px rgba(255,255,255,0.6);">
+                style="border-collapse: collapse; padding: 24px; border-radius: 16px 16px 0 0; border-bottom: none; backdrop-filter: blur(24px); {% if design.style == 'vision-os' %}background: linear-gradient(145deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.02) 100%); background-color: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); border-top: 1px solid rgba(255,255,255,0.3); box-shadow: inset 0 1px 1px rgba(255,255,255,0.2), inset 0 0 20px rgba(255,255,255,0.1);{% else %}background: linear-gradient(145deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.6) 100%); background-color: #ffffff; border: 1px solid rgba(255,255,255,0.7); border-top: 1px solid rgba(255,255,255,0.9); box-shadow: inset 0 1px 1px rgba(255,255,255,1), inset 0 0 20px rgba(255,255,255,0.6);{% endif %}">
                                 <table cellpadding="0" cellspacing="0" border="0" width="100%"
                   style="border-collapse: separate; width: 100%;">
                   <tbody>
                     <tr>
                                             <td align="center" valign="middle"
-                        style="border-collapse: separate; border-radius: 14px; border: 1px solid rgba(255,255,255,0.8); padding: 10px; vertical-align: middle; background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(241,245,249,0.8) 100%); background-color: #f8fafc; box-shadow: inset 0 2px 4px rgba(255,255,255,0.9), 0 8px 20px rgba(0,0,0,0.04), 0 2px 6px rgba(0,0,0,0.02);">
+                        style="border-collapse: separate; border-radius: 14px; padding: 10px; vertical-align: middle; {% if design.style == 'vision-os' %}background: linear-gradient(180deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.05) 100%); background-color: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); box-shadow: inset 0 1px 2px rgba(255,255,255,0.2), 0 8px 20px rgba(0,0,0,0.04), 0 2px 6px rgba(0,0,0,0.02);{% else %}background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(241,245,249,0.8) 100%); background-color: #f8fafc; border: 1px solid rgba(255,255,255,0.8); box-shadow: inset 0 2px 4px rgba(255,255,255,0.9), 0 8px 20px rgba(0,0,0,0.04), 0 2px 6px rgba(0,0,0,0.02);{% endif %}">
                         <table border="0" cellspacing="0" cellpadding="0"
                           style="border-collapse: collapse;">
                           <tbody>
@@ -84,10 +84,10 @@
                                     </tr>
                                                                         <tr>
                                       <td style="padding: 6px 0 10px 0; border-collapse: collapse;">
-                                        <table cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;">
+                                        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;">
                                           <tbody>
                                             <tr>
-                                              <td style="width: 40px; height: 4px; background: {{ design.accent_gradient|default(design.accent_color) }}; border-radius: 2px; font-size: 0; line-height: 0; box-shadow: 0 2px 8px rgba(99, 102, 241, 0.4);">
+                                              <td style="width: 100%; height: 1px; background: linear-gradient(90deg, {{ design.accent_color }} 0%, transparent 100%); font-size: 0; line-height: 0;">
                                                 &nbsp;
                                               </td>
                                             </tr>
@@ -110,20 +110,20 @@
                                                                         {% if personal.email %}
                                     <tr>
                                       <td style="border-collapse: collapse; padding: 0 0 1px 0;" nowrap="">
-                                        <a href="mailto:{{ personal.email }}"
-                                          style="text-decoration: none; font-weight: 400; font-style: normal; color: {{ design.text_secondary }}; font-size: 12px; font-family: {{ design.font_family }};">
-                                          {{ personal.email }}
-                                        </a>
+                                          <a href="mailto:{{ personal.email }}"
+                                            style="text-decoration: none; font-weight: 400; font-style: normal; color: {{ design.text_secondary }}; font-size: 12px; font-family: {{ design.font_family }};">
+                                            {{ personal.email }}
+                                          </a>
                                       </td>
                                     </tr>
                                     {% endif %}
                                                                         {% if contact.website_display %}
                                     <tr>
                                       <td style="border-collapse: collapse; padding: 0 0 2px 0;" nowrap="">
-                                        <a href="{{ contact.website }}" target="_blank"
-                                          style="text-decoration: none; font-weight: 400; font-style: normal; color: {{ design.accent_color }}; font-size: 12px; font-family: {{ design.font_family }};">
-                                          {{ contact.website_display }}
-                                        </a>
+                                          <a href="{{ contact.website }}" target="_blank"
+                                            style="text-decoration: none; font-weight: 400; font-style: normal; color: {{ design.accent_color }}; font-size: 12px; font-family: {{ design.font_family }};">
+                                            {{ contact.website_display }}
+                                          </a>
                                       </td>
                                     </tr>
                                     {% endif %}
@@ -135,7 +135,11 @@
                                 <img alt="{{ personal.full_name }}" class="responsive-profile"
                                   src="{{ asset_base_url }}/{{ profile_filename }}"
                                   width="{{ design.profile_size }}"
-                                  style="display: block; border-radius: 20px; border: 2px solid #ffffff; box-shadow: 0 8px 24px rgba(0,0,0,0.08); outline: none;">
+                                  {% if design.style == 'vision-os' %}
+                                  style="display: block; border-radius: 50%; box-shadow: 0 8px 24px rgba(0,0,0,0.15), 0 0 0 1px rgba(255,255,255,0.3); outline: none;"
+                                  {% else %}
+                                  style="display: block; border-radius: 20px; border: 2px solid #ffffff; box-shadow: 0 8px 24px rgba(0,0,0,0.08); outline: none;"
+                                  {% endif %}>
                               </td>
                             </tr>
                           </tbody>
@@ -154,7 +158,7 @@
           <tbody>
             <tr>
               <td align="center"
-                style="background: linear-gradient(180deg, rgba(248,250,252,0.8) 0%, rgba(241,245,249,0.9) 100%); background-color: #f8fafc; border-radius: 0 0 16px 16px; border: 1px solid rgba(255,255,255,0.6); border-top: 1px solid rgba(226,232,240,0.6); padding: 12px 16px; backdrop-filter: blur(24px);">
+                style="border-radius: 0 0 16px 16px; padding: 12px 16px; backdrop-filter: blur(24px); {% if design.style == 'vision-os' %}background: linear-gradient(180deg, rgba(248,250,252,0.15) 0%, rgba(241,245,249,0.05) 100%); background-color: rgba(248,250,252,0.1); border: 1px solid rgba(255,255,255,0.15); border-top: 1px solid rgba(255,255,255,0.2);{% else %}background: linear-gradient(180deg, rgba(248,250,252,0.8) 0%, rgba(241,245,249,0.9) 100%); background-color: #f8fafc; border: 1px solid rgba(255,255,255,0.6); border-top: 1px solid rgba(226,232,240,0.6);{% endif %}">
                 <table align="center" cellpadding="0" cellspacing="0" border="0" style="border-collapse: separate; line-height: 0px;">
                   <tbody>
                     <tr>

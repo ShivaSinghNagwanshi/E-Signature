@@ -80,6 +80,11 @@ def build_template_context(config: dict, use_local: bool = False) -> dict:
     verified_exists = (ICONS_DIR / "verified.png").exists() or (ICONS_DIR / "verified.gif").exists()
     if verified_exists:
         icon_extensions["verified"] = resolve_asset_extension(ICONS_DIR, "verified")
+    background_filename = None
+    for ext in ["jpg", "jpeg", "png", "gif", "webp"]:
+        if (ASSETS_DIR / f"background.{ext}").exists():
+            background_filename = f"background.{ext}"
+            break
     social_links = {k: v for k, v in config.get("social_links", {}).items() if v}
     design_defaults = {
         "accent_color": "#6366f1",
@@ -94,7 +99,10 @@ def build_template_context(config: dict, use_local: bool = False) -> dict:
         "icon_size": 22,
         "icon_color": "#64748b",
     }
-    design = {**design_defaults, **config.get("design", {})}
+    active_theme = config.get("active_theme", "glassmorphism")
+    theme_config = config.get("themes", {}).get(active_theme, {})
+    design = {**design_defaults, **config.get("design", {}), **theme_config}
+    design["style"] = active_theme
     personal = config.get("personal", {})
     if not personal:
         personal = {
@@ -129,6 +137,7 @@ def build_template_context(config: dict, use_local: bool = False) -> dict:
         "logo_filename": logo_filename,
         "icon_extensions": icon_extensions,
         "verified_icon_exists": verified_exists,
+        "background_filename": background_filename,
     }
 
 def generate_signature(config: dict, use_local: bool = False) -> str:
