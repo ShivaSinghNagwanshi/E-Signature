@@ -10,22 +10,22 @@
   }
 </style>
 <table cellpadding="0" cellspacing="0" border="0" width="100%"
-  style="border-collapse: collapse; font-size: 10px; font-family: {{ design.font_family }}; max-width: 600px; width: 100%;">
+  style="border-collapse: collapse; font-size: 10px; font-family: {{ design.font_family }}; max-width: 600px; width: 100%; background: linear-gradient(120deg, #f6f8fd 0%, #f1f5f9 100%); border-radius: 16px; padding: 24px;">
   <tbody>
     <tr>
-      <td style="line-height: 16px; font-family: {{ design.font_family }}; border-collapse: collapse;">
+      <td align="center" style="line-height: 16px; font-family: {{ design.font_family }}; border-collapse: collapse; padding: 16px;">
                 <table cellpadding="0" cellspacing="0" border="0" width="100%"
-          style="border-collapse: separate; border-radius: {{ design.card_border_radius }}; border-radius: 12px 12px 0 0; box-shadow: {{ design.card_shadow|default('0 8px 32px rgba(0, 0, 0, 0.08)') }}; width: 100%;">
+          style="border-collapse: separate; border-radius: 16px; box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.08), 0 10px 20px -5px rgba(0, 0, 0, 0.04); width: 100%;">
           <tbody>
             <tr>
               <td align="left" valign="top" class="responsive-card-padding"
-                style="border-collapse: collapse; padding: 20px; border-radius: 12px 12px 0 0; border: 1px solid {{ design.border_color|default('#e5e7eb') }}; border-top: 4px solid {{ design.accent_color }}; border-bottom: none; background: linear-gradient(135deg, rgba(255,255,255,1) 0%, rgba(238,242,255,0.9) 100%); background-color: #ffffff; backdrop-filter: blur({{ design.card_backdrop_blur|default('20px') }}); box-shadow: inset 0 1px 0 rgba(255,255,255,1), inset 0 0 20px rgba(255,255,255,0.5);">
+                style="border-collapse: collapse; padding: 24px; border-radius: 16px 16px 0 0; border: 1px solid rgba(255,255,255,0.7); border-top: 1px solid rgba(255,255,255,0.9); border-bottom: none; background: linear-gradient(145deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.6) 100%); background-color: #ffffff; backdrop-filter: blur(24px); box-shadow: inset 0 1px 1px rgba(255,255,255,1), inset 0 0 20px rgba(255,255,255,0.6);">
                                 <table cellpadding="0" cellspacing="0" border="0" width="100%"
                   style="border-collapse: separate; width: 100%;">
                   <tbody>
                     <tr>
                                             <td align="center" valign="middle"
-                        style="border-collapse: separate; border-radius: 12px; border: 1px solid rgba(255,255,255,0.8); padding: 8px; vertical-align: middle; background: linear-gradient(180deg, rgba(255,255,255,0.9) 0%, rgba(224,231,255,0.6) 100%); background-color: #f8fafc; box-shadow: inset 0 2px 4px rgba(255,255,255,0.8), 0 4px 15px rgba(99,102,241,0.1);">
+                        style="border-collapse: separate; border-radius: 14px; border: 1px solid rgba(255,255,255,0.8); padding: 10px; vertical-align: middle; background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(241,245,249,0.8) 100%); background-color: #f8fafc; box-shadow: inset 0 2px 4px rgba(255,255,255,0.9), 0 8px 20px rgba(0,0,0,0.04), 0 2px 6px rgba(0,0,0,0.02);">
                         <table border="0" cellspacing="0" cellpadding="0"
                           style="border-collapse: collapse;">
                           <tbody>
@@ -87,7 +87,7 @@
                                         <table cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;">
                                           <tbody>
                                             <tr>
-                                              <td style="width: 80px; height: 3px; background: {{ design.accent_gradient|default(design.accent_color) }}; border-radius: 2px; font-size: 0; line-height: 0;">
+                                              <td style="width: 40px; height: 4px; background: {{ design.accent_gradient|default(design.accent_color) }}; border-radius: 2px; font-size: 0; line-height: 0; box-shadow: 0 2px 8px rgba(99, 102, 241, 0.4);">
                                                 &nbsp;
                                               </td>
                                             </tr>
@@ -131,11 +131,11 @@
                                 </table>
                               </td>
                                                             <td align="right" valign="middle" class="responsive-gap"
-                                style="padding: 0 0 0 18px; border-collapse: collapse; vertical-align: middle; width: 1%;">
+                                style="padding: 0 0 0 24px; border-collapse: collapse; vertical-align: middle; width: 1%;">
                                 <img alt="{{ personal.full_name }}" class="responsive-profile"
                                   src="{{ asset_base_url }}/{{ profile_filename }}"
                                   width="{{ design.profile_size }}"
-                                  style="display: block; border-radius: 12px; border: 0; outline: none;">
+                                  style="display: block; border-radius: 20px; border: 2px solid #ffffff; box-shadow: 0 8px 24px rgba(0,0,0,0.08); outline: none;">
                               </td>
                             </tr>
                           </tbody>
@@ -154,7 +154,7 @@
           <tbody>
             <tr>
               <td align="center"
-                style="background: #f8fafc; background-color: #f8fafc; border-radius: 0 0 12px 12px; border: 1px solid {{ design.border_color|default('#e5e7eb') }}; border-top: none; padding: 10px 12px;">
+                style="background: linear-gradient(180deg, rgba(248,250,252,0.8) 0%, rgba(241,245,249,0.9) 100%); background-color: #f8fafc; border-radius: 0 0 16px 16px; border: 1px solid rgba(255,255,255,0.6); border-top: 1px solid rgba(226,232,240,0.6); padding: 12px 16px; backdrop-filter: blur(24px);">
                 <table align="center" cellpadding="0" cellspacing="0" border="0" style="border-collapse: separate; line-height: 0px;">
                   <tbody>
                     <tr>
