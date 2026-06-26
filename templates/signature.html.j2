@@ -1,0 +1,180 @@
+<table cellpadding="0" cellspacing="0" border="0"
+  style="border-collapse: collapse; font-size: 10px; font-family: {{ design.font_family }}; max-width: 600px;">
+  <tbody>
+    <tr>
+      <td style="line-height: 16px; font-family: {{ design.font_family }}; border-collapse: collapse;">
+                <table cellpadding="0" cellspacing="0" border="0"
+          style="border-collapse: separate; border-radius: {{ design.card_border_radius }}; border-radius: 12px 12px 0 0; box-shadow: {{ design.card_shadow|default('0 8px 32px rgba(0, 0, 0, 0.08)') }};">
+          <tbody>
+            <tr>
+              <td align="left" valign="top"
+                style="border-collapse: collapse; padding: 20px; border-radius: 12px 12px 0 0; border: 1px solid {{ design.border_color|default('#e5e7eb') }}; border-top: 4px solid {{ design.accent_color }}; border-bottom: none; background: linear-gradient(135deg, rgba(255,255,255,1) 0%, rgba(238,242,255,0.9) 100%); background-color: #ffffff; backdrop-filter: blur({{ design.card_backdrop_blur|default('20px') }}); box-shadow: inset 0 1px 0 rgba(255,255,255,1), inset 0 0 20px rgba(255,255,255,0.5);">
+                                <table cellpadding="0" cellspacing="0" border="0"
+                  style="border-collapse: separate;">
+                  <tbody>
+                    <tr>
+                                            <td align="center" valign="middle"
+                        style="border-collapse: separate; border-radius: 12px; border: 1px solid rgba(255,255,255,0.8); padding: 8px; vertical-align: middle; background: linear-gradient(180deg, rgba(255,255,255,0.9) 0%, rgba(224,231,255,0.6) 100%); background-color: #f8fafc; box-shadow: inset 0 2px 4px rgba(255,255,255,0.8), 0 4px 15px rgba(99,102,241,0.1);">
+                        <table border="0" cellspacing="0" cellpadding="0"
+                          style="border-collapse: collapse;">
+                          <tbody>
+                                                        {% for icon_key in social_order %}
+                            {% if social_links.get(icon_key) %}
+                            <tr>
+                              <td align="center" style="padding: {{ '4px 0 0 0' if not loop.first else '0' }};">
+                                <a href="{{ social_links[icon_key] }}" target="_blank"
+                                  style="text-decoration: none; display: inline-block;">
+                                  <img alt="{{ icon_key }}"
+                                    src="{{ asset_base_url }}/icons/{{ icon_key }}.{{ icon_extensions.get(icon_key, 'png') }}"
+                                    width="{{ design.icon_size }}"
+                                    height="{{ design.icon_size }}"
+                                    style="display: block; border: 0; outline: none;">
+                                </a>
+                              </td>
+                            </tr>
+                            {% endif %}
+                            {% endfor %}
+                          </tbody>
+                        </table>
+                      </td>
+                                            <td style="padding-right: 18px; border-collapse: collapse;">
+                      </td>
+                                            <td align="left" valign="middle"
+                        style="border-collapse: collapse; vertical-align: middle;">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0"
+                          style="border-collapse: collapse;">
+                          <tbody>
+                            <tr>
+                              <td align="left" valign="middle"
+                                style="border-collapse: collapse;">
+                                <table width="100%" border="0" cellspacing="0" cellpadding="0"
+                                  style="border-collapse: collapse;">
+                                  <tbody>
+                                                                        <tr>
+                                      <td style="padding: 0 0 4px 0; border-collapse: collapse;">
+                                        <table width="100%" border="0" cellspacing="0" cellpadding="0" style="border-collapse: collapse;">
+                                          <tr>
+                                            {% if assets.use_logo is not defined or assets.use_logo %}
+                                            <td valign="middle" style="padding-right: 12px; width: 1%;">
+                                              <a href="{{ contact.website }}" target="_blank" style="text-decoration: none;">
+                                                <img alt="{{ personal.company }}" src="{{ asset_base_url }}/{{ logo_filename }}" width="60" style="display: block; border: 0; outline: none; min-width: 60px;">
+                                              </a>
+                                            </td>
+                                            {% endif %}
+                                            <td valign="middle" style="padding-left: 0;">
+                                              <span style="font-weight: 800; font-style: normal; color: {{ design.text_primary }}; font-size: 18px; letter-spacing: -0.5px; font-family: {{ design.font_family }};">{{ personal.full_name }}</span>
+                                              {% if verified_icon_exists %}
+                                              &nbsp;<img alt="Verified" src="{{ asset_base_url }}/icons/verified.{{ icon_extensions.get('verified', 'png') }}" width="16" height="16" style="vertical-align: text-bottom; display: inline; border: 0;">
+                                              {% endif %}
+                                            </td>
+                                          </tr>
+                                        </table>
+                                      </td>
+                                    </tr>
+                                                                        <tr>
+                                      <td style="padding: 6px 0 10px 0; border-collapse: collapse;">
+                                        <table cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;">
+                                          <tbody>
+                                            <tr>
+                                              <td style="width: 80px; height: 3px; background: {{ design.accent_gradient|default(design.accent_color) }}; border-radius: 2px; font-size: 0; line-height: 0;">
+                                                &nbsp;
+                                              </td>
+                                            </tr>
+                                          </tbody>
+                                        </table>
+                                      </td>
+                                    </tr>
+                                                                        <tr>
+                                      <td style="border-collapse: collapse; padding: 0 0 1px 0;" nowrap="">
+                                        <span style="font-weight: 400; font-style: normal; color: {{ design.text_secondary }}; font-size: 12px; font-family: {{ design.font_family }};">{{ personal.job_title }}</span>
+                                      </td>
+                                    </tr>
+                                                                        {% if personal.company %}
+                                    <tr>
+                                      <td style="border-collapse: collapse; padding: 0 0 6px 0;" nowrap="">
+                                        <span style="font-weight: 600; font-style: normal; color: {{ design.text_primary }}; font-size: 12px; font-family: {{ design.font_family }};">{{ personal.company }}</span>
+                                      </td>
+                                    </tr>
+                                    {% endif %}
+                                                                        {% if personal.email %}
+                                    <tr>
+                                      <td style="border-collapse: collapse; padding: 0 0 1px 0;" nowrap="">
+                                        <a href="mailto:{{ personal.email }}"
+                                          style="text-decoration: none; font-weight: 400; font-style: normal; color: {{ design.text_secondary }}; font-size: 12px; font-family: {{ design.font_family }};">
+                                          {{ personal.email }}
+                                        </a>
+                                      </td>
+                                    </tr>
+                                    {% endif %}
+                                                                        {% if contact.website_display %}
+                                    <tr>
+                                      <td style="border-collapse: collapse; padding: 0 0 2px 0;" nowrap="">
+                                        <a href="{{ contact.website }}" target="_blank"
+                                          style="text-decoration: none; font-weight: 400; font-style: normal; color: {{ design.accent_color }}; font-size: 12px; font-family: {{ design.font_family }};">
+                                          {{ contact.website_display }}
+                                        </a>
+                                      </td>
+                                    </tr>
+                                    {% endif %}
+                                  </tbody>
+                                </table>
+                              </td>
+                                                            <td align="right" valign="middle"
+                                style="padding: 0 0 0 18px; border-collapse: collapse; vertical-align: middle;">
+                                <img alt="{{ personal.full_name }}"
+                                  src="{{ asset_base_url }}/{{ profile_filename }}"
+                                  width="{{ design.profile_size }}"
+                                  style="display: block; border-radius: 12px; border: 0; outline: none;">
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+                {% if cta.enabled %}
+        <table cellpadding="0" cellspacing="0" border="0"
+          style="border-collapse: separate;">
+          <tbody>
+            <tr>
+              <td align="center"
+                style="background: linear-gradient(180deg, #f1f5f9 0%, #e2e8f0 100%); background-color: #f1f5f9; border-radius: 0 0 12px 12px; border: 1px solid {{ design.border_color|default('#e5e7eb') }}; border-top: none; padding: 0;">
+                <table width="100%" cellpadding="0" cellspacing="0" border="0"
+                  style="border-collapse: collapse; width: 100%;">
+                  <tbody>
+                    <tr>
+                      <td align="center" valign="middle"
+                        style="border-collapse: collapse; padding: 12px 16px;">
+                                                                        <a href="{{ cta.url }}" target="_blank"
+                          style="display: block; width: 100%; box-sizing: border-box; text-align: center; background: {{ design.accent_gradient|default(design.accent_color) }}; background-color: {{ design.accent_color }}; color: #ffffff; font-family: {{ design.font_family }}; font-size: 14px; font-weight: 700; text-decoration: none; padding: 12px 24px; border-radius: 8px; letter-spacing: 0.5px; box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3), inset 0 1px 0 rgba(255,255,255,0.3); border: 1px solid rgba(255,255,255,0.1);">
+                          {{ cta.text }}
+                        </a>
+                                              </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        {% else %}
+                <table cellpadding="0" cellspacing="0" border="0"
+          style="border-collapse: separate;">
+          <tbody>
+            <tr>
+              <td style="height: 1px; background-color: #e5e7eb; border-radius: 0 0 12px 12px; font-size: 0; line-height: 0;">
+                &nbsp;
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        {% endif %}
+      </td>
+    </tr>
+  </tbody>
+</table>
