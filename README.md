@@ -2,13 +2,15 @@
 
 ![E-Signature](e-signature.png)
 
-A highly customizable, responsive HTML email signature generator. This project takes configuration data and compiles it into an HTML email signature, along with an Apple Mail-inspired preview interface.
+A highly customizable, responsive, and animated HTML email signature generator. This project takes configuration data and compiles it into a premium email signature, along with an Apple Mail-inspired preview interface.
+The compiler features **native animation support** for all visual elements, to enhance the viewer's experience.
 
 ## Key Features
 
 - **HTML Email Layout**: Uses `<table>` based structures with inline CSS to ensure consistent rendering across major email clients (Gmail, Outlook, Apple Mail, etc.).
 - **Interactive Preview UI**: Generates a responsive, dark-mode Apple Mail mockup to preview the signature in a typical email client context.
-- **Dynamic Asset Resolution**: Supports both static (PNG/JPG) and animated (GIF) social media icons, detecting and linking them based on configuration.
+- **Dynamic Asset Resolution**: Supports both static (PNG/JPG) and animated social media icons. *(Note: Only `.gif` format is supported for animated icons).*
+- **Rich Hyperlinks**: Natively supports full redirection for social media links, personal website URLs, and `mailto:` links for quick email composition.
 - **Config-Driven Architecture**: Manage names, titles, colors, and layout preferences entirely through `config.json`. The included `config.json` contains generic filler data so you can easily fork this repository and swap in your own details to make it your own!
 - **GitHub Pages Ready**: Includes a pre-configured `.github/workflows/static.yml` action to seamlessly deploy your signature preview and assets to GitHub Pages.
 
@@ -61,10 +63,24 @@ All signature data is stored in `config.json`. Edit this file to customize your 
 | `personal`      | Name, job title, company, email, and pronouns           |
 | `contact`       | Website URLs and display text                           |
 | `social_links`  | Links to LinkedIn, GitHub, X (Twitter), Instagram, etc. |
+| `cta`           | Call-To-Action button text, link URL, and custom colors |
 | `design`        | CSS styling parameters (colors, border radii, shadows)  |
 | `hosting`       | Base URLs for resolving deployed asset paths            |
 
-### 5. Generate the Signature and Preview
+
+### 5. Animated GIF Guidelines (Profile & Logo)
+
+If you plan to use animated GIFs for your `signature-profile` or `signature-logo`, you must follow these design guidelines to ensure email client compatibility and performance:
+
+*   **Aspect Ratio & Dimensions**:
+    *   The profile picture MUST be exactly **1:1 (Square)**.
+    *   Recommended resolution is **240x240 pixels**. For higher PPP/DPR, use **480x480 pixels**.
+*   **File Size Target**:
+    *   Keep the final GIF under **250 KB** (Absolute maximum is **500 KB**). Heavy images trigger spam filters and load slowly on mobile networks.
+*   **Transparency**:
+    *   Use Canava Pro for easy animations and export with Transparent backgroud.
+
+### 6. Generate the Signature and Preview
 
 Run the generation script in **local mode** to build the files with relative asset paths suitable for local viewing:
 
@@ -77,6 +93,29 @@ This command will output:
 2. `index.html`: The Apple Mail mockup preview interface.
 
 Open `index.html` in your web browser to preview the result.
+
+### 7. How to Install in Email Clients
+
+Because email clients are notoriously terrible at rendering complex code, you cannot simply copy and paste the raw HTML source code into your settings. Instead, you must copy the **visually rendered** signature.
+
+**Method 1: The Standard Copy-Paste (Recommended)**
+1. Open the generated `index.html` (or your deployed URL) in your web browser.
+2. Click the **"Copy Signature Card"** button in the top right of the preview toolbar, OR manually highlight the visual signature card with your mouse and press `Ctrl+C` (`Cmd+C` on Mac).
+3. Paste the visual signature directly into your email client's signature box:
+   *   **Gmail**: Settings > See all settings > General > Signature > Paste.
+   *   **Outlook Web**: Settings > Mail > Compose and reply > Email signature > Paste.
+   *   **Apple Mail**: Settings > Signatures > select a signature > Paste. *(Note: If formatting looks slightly off in Apple Mail, uncheck "Always match my default message font" in the settings).*
+   *   **Outlook Desktop (Windows)**: For the best results in legacy Outlook, copy the `e-signature.html` file into `%APPDATA%\Microsoft\Signatures`.
+
+**Method 2: The Developer Tools (Not Recommended)**
+If you strictly want to bypass the clipboard and inject the raw code into Gmail:
+1. Open the generated `index.html` (or your deployed URL) in your web browser.
+2. Click the **"Copy Raw HTML Code"** button in the top right of the preview toolbar.
+3. In Gmail Settings > Signature, create a new signature and type the word `INSERT_HERE`.
+4. Right-click the word `INSERT_HERE` and select **Inspect**.
+5. In your browser's Developer Tools, find the HTML node (it will look like `<div aria-label="Signature"...>INSERT_HERE</div>`).
+6. Right-click that `<div>` node, select **Edit as HTML**, paste your entire `e-signature.html` raw code, and click away.
+7. Save your Gmail settings.
 
 ## Architecture
 

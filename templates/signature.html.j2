@@ -9,8 +9,8 @@
     .responsive-gap { padding-left: 8px !important; padding-right: 8px !important; }
   }
 </style>
-<table cellpadding="0" cellspacing="0" border="0" width="100%"
-  style="border-collapse: collapse; font-size: 10px; font-family: {{ design.font_family }}; max-width: 600px; width: 100%; {% if background_filename %}background: url('{{ asset_base_url }}/{{ background_filename }}') center/cover no-repeat;{% else %}background: linear-gradient(120deg, #f6f8fd 0%, #f1f5f9 100%);{% endif %} border-radius: 16px; padding: 24px;">
+<table cellpadding="0" cellspacing="0" border="0" {% if background_filename %}background="{{ asset_base_url }}/{{ background_filename }}"{% endif %}
+  style="border-collapse: collapse; font-size: 10px; font-family: {{ design.font_family }}; width: 100%; max-width: 600px; {% if background_filename %}background-image: url('{{ asset_base_url }}/{{ background_filename }}'); background-size: cover; background-position: center; background-repeat: no-repeat;{% else %}background: linear-gradient(120deg, #f6f8fd 0%, #f1f5f9 100%);{% endif %} background-color: #000000; border-radius: 16px; padding: 24px;">
   <tbody>
     <tr>
       <td align="center" style="line-height: 16px; font-family: {{ design.font_family }}; border-collapse: collapse; padding: 16px;">
@@ -136,9 +136,17 @@
                                   src="{{ asset_base_url }}/{{ profile_filename }}"
                                   width="{{ design.profile_size }}"
                                   {% if design.style == 'vision-os' %}
-                                  style="display: block; border-radius: 50%; box-shadow: 0 8px 24px rgba(0,0,0,0.15), 0 0 0 1px rgba(255,255,255,0.3); outline: none;"
+                                    {% if profile_is_gif %}
+                                    style="display: block; box-shadow: none; outline: none;"
+                                    {% else %}
+                                    style="display: block; border-radius: 50%; box-shadow: 0 8px 24px rgba(0,0,0,0.15), 0 0 0 1px rgba(255,255,255,0.3); outline: none;"
+                                    {% endif %}
                                   {% else %}
-                                  style="display: block; border-radius: 20px; border: 2px solid #ffffff; box-shadow: 0 8px 24px rgba(0,0,0,0.08); outline: none;"
+                                    {% if profile_is_gif %}
+                                    style="display: block; box-shadow: none; outline: none;"
+                                    {% else %}
+                                    style="display: block; border-radius: 20px; border: 2px solid #ffffff; box-shadow: 0 8px 24px rgba(0,0,0,0.08); outline: none;"
+                                    {% endif %}
                                   {% endif %}>
                               </td>
                             </tr>

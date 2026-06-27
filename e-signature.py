@@ -42,18 +42,22 @@ def load_config(config_path: Path = CONFIG_PATH) -> dict:
 
 def resolve_asset_path(name: str, fallback_subdir: str = "", force_png: bool = False) -> str:
     """
-    Looks for .gif in assets/animated/ first (unless force_png is True).
+    Looks for .gif in assets/animated/ or root first (unless force_png is True).
     Falls back to .png in assets/{fallback_subdir}/.
     Returns path relative to ASSETS_DIR.
     """
     animated_dir = ASSETS_DIR / "animated"
-    
-    if not force_png and (animated_dir / f"{name}.gif").exists():
-        return f"animated/{name}.gif"
-        
     fallback_dir = ASSETS_DIR / fallback_subdir if fallback_subdir else ASSETS_DIR
+    
+    if not force_png:
+        if (animated_dir / f"{name}.gif").exists():
+            return f"animated/{name}.gif"
+        if (fallback_dir / f"{name}.gif").exists():
+            return f"{fallback_subdir}/{name}.gif" if fallback_subdir else f"{name}.gif"
+        
     if (fallback_dir / f"{name}.png").exists():
         return f"{fallback_subdir}/{name}.png" if fallback_subdir else f"{name}.png"
+    # Fallback to PNG name even if missing so templates don't break entirely
     return f"{fallback_subdir}/{name}.png" if fallback_subdir else f"{name}.png"
 
 def build_template_context(config: dict, use_local: bool = False, force_png: bool = False) -> dict:
@@ -69,6 +73,8 @@ def build_template_context(config: dict, use_local: bool = False, force_png: boo
         asset_base_url = f"{base_url}/assets" if base_url else "./assets"
     profile_name = config.get("assets", {}).get("profile_photo", "signature-profile")
     profile_filename = resolve_asset_path(profile_name, force_png=force_png)
+    profile_png_filename = resolve_asset_path(profile_name, force_png=True)
+    profile_is_gif = profile_filename.endswith(".gif")
     logo_name = config.get("assets", {}).get("logo", "signature-logo")
     logo_filename = resolve_asset_path(logo_name, force_png=force_png)
     social_order = config.get("social_order", SOCIAL_ICON_ORDER_DEFAULT)
@@ -133,6 +139,8 @@ def build_template_context(config: dict, use_local: bool = False, force_png: boo
         "hosting": config.get("hosting", {}),
         "asset_base_url": asset_base_url,
         "profile_filename": profile_filename,
+        "profile_png_filename": profile_png_filename,
+        "profile_is_gif": profile_is_gif,
         "logo_filename": logo_filename,
         "icon_paths": icon_paths,
         "verified_icon_exists": verified_exists,

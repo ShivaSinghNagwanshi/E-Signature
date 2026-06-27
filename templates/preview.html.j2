@@ -33,13 +33,13 @@
                         sans: ['-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
                     },
                     colors: {
-                        'mac-sidebar': '#1e1e1e',
-                        'mac-list': '#1c1c1e',
-                        'mac-body': '#1e1e1e',
-                        'mac-border': '#333333',
+                        'mac-sidebar': 'rgba(30, 30, 30, 0.45)',
+                        'mac-list': 'rgba(25, 25, 25, 0.35)',
+                        'mac-body': 'rgba(20, 20, 20, 0.45)',
+                        'mac-border': 'rgba(255, 255, 255, 0.1)',
                         'mac-blue': '#0a60ff',
                         'mac-text-muted': '#8e8e93',
-                        'mac-toolbar': '#252525'
+                        'mac-toolbar': 'rgba(40, 40, 40, 0.45)'
                     }
                 }
             }
@@ -47,30 +47,27 @@
     </script>
     <style>
         body {
-            background-color: #000;
             margin: 0;
             overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
+            background: linear-gradient(125deg, #0f172a, #1e1b4b, #020617, #172554);
+            background-size: 400% 400%;
+            animation: gradientBG 20s ease infinite;
         }
-        /* Subtle ambient glow behind the window */
-        .ambient-bg {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 80vw;
-            height: 80vh;
-            background: radial-gradient(circle, rgba(10,96,255,0.15) 0%, rgba(0,0,0,0) 70%);
-            pointer-events: none;
-            z-index: 0;
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
         .mac-window {
-            background: #1e1e1e;
-            border: 1px solid #333;
-            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            background: rgba(30, 30, 30, 0.3);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.3);
             border-radius: 10px;
             overflow: hidden;
             z-index: 10;
@@ -138,16 +135,91 @@
         }
         /* Transitions for Sidebar Toggle */
         #column-1 {
-            transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: margin-left 0.8s cubic-bezier(0.22, 1, 0.36, 1);
         }
         .sidebar-hidden #column-1 {
             margin-left: -220px; /* Hide by pulling left */
         }
+        
+        /* Button Animations */
+        .animate-pop-in {
+            opacity: 0;
+            animation: popIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+        @keyframes popIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .animate-pop-out {
+            animation: popOut 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+        @keyframes popOut {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(0.5); opacity: 0; }
+        }
+        
+        .flip-active {
+            transform: rotateY(180deg) scale(1.1);
+        }
+        
+        .active-mail-glass {
+            background: rgba(10, 96, 255, 0.22) !important;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-left: 3px solid #0a60ff !important;
+            box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.08), 
+                        inset -1px 0 0 0 rgba(255, 255, 255, 0.05),
+                        0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        @keyframes reverseStagger {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(-15px); opacity: 0; }
+        }
+        .animate-reverse-stagger {
+            animation: reverseStagger 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+        @keyframes dropDownStagger {
+            0% { transform: translateY(-15px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+        .animate-drop-down-stagger {
+            opacity: 0;
+            animation: dropDownStagger 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+        @keyframes slideUpFade {
+            0% { transform: translateY(30px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+        .animate-slide-up-fade {
+            opacity: 0;
+            animation: slideUpFade 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+        @keyframes expandSearch {
+            0% { width: 32px; background-color: transparent; border-color: transparent; opacity: 0; transform: translateX(-10px); }
+            10% { width: 32px; background-color: transparent; border-color: transparent; opacity: 1; transform: translateX(0); }
+            100% { width: 12rem; background-color: rgba(0,0,0,0.3); border-color: var(--mac-border); opacity: 1; transform: translateX(0); }
+        }
+        .animate-expand-search {
+            animation: expandSearch 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+        .animate-drop-down-stagger {
+            opacity: 0;
+            animation: dropDownStagger 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+        @keyframes slideUpFade {
+            0% { transform: translateY(30px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+        .animate-slide-up-fade {
+            opacity: 0;
     </style>
 </head>
-<body>
-    <div class="ambient-bg"></div>
-    <div class="mac-window w-[1300px] h-[850px] max-w-[95vw] max-h-[95vh] text-white">
+<body class="bg-[#1e1e1e] h-screen flex items-center justify-center font-mac">
+    <div class="mac-window w-[1300px] h-[850px] max-w-[95vw] max-h-[95vh] text-white sidebar-hidden overflow-hidden flex">
                 <div id="column-1" class="w-[220px] bg-mac-sidebar border-r border-mac-border flex flex-col flex-shrink-0 hidden lg:flex">
                         <div class="h-14 flex items-center px-4 gap-[8px] pt-1">
                 <div class="traffic-light close"></div>
@@ -188,7 +260,7 @@
                     <span>Remind Me</span>
                 </div>
                 <div class="sidebar-item">
-                    <span class="material-symbols-outlined text-[16px] text-[#30d158]">send</span>
+                    <span class="material-symbols-outlined text-[16px] text-[#30d158]">schedule_send</span>
                     <span>Send Later</span>
                 </div>
                 <div class="px-3 pt-1 pb-1 text-[11px] font-semibold text-mac-text-muted flex items-center gap-1 cursor-pointer">
@@ -197,11 +269,11 @@
                 </div>
                 <div class="px-3 pt-6 pb-1 text-[11px] font-semibold text-mac-text-muted">Smart Mailboxes</div>
                 <div class="sidebar-item">
-                    <span class="material-symbols-outlined text-[16px] text-[#bf5af2]">settings</span>
+                    <span class="material-symbols-outlined text-[16px] text-[#bf5af2]">calendar_today</span>
                     <span>Today</span>
                 </div>
                 <div class="sidebar-item">
-                    <span class="material-symbols-outlined text-[16px] text-[#bf5af2]">settings</span>
+                    <span class="material-symbols-outlined text-[16px] text-[#bf5af2]">auto_stories</span>
                     <span>Book Club</span>
                 </div>
                 <div class="px-3 pt-6 pb-1 text-[11px] font-semibold text-mac-text-muted">iCloud</div>
@@ -210,20 +282,45 @@
                     <span>Inbox</span>
                 </div>
                 <div class="sidebar-item">
-                    <span class="material-symbols-outlined text-[16px] text-[#0a84ff]">drafts</span>
+                    <span class="material-symbols-outlined text-[16px] text-[#0a84ff]">draft</span>
                     <span>Drafts</span>
                 </div>
                 <div class="sidebar-item">
                     <span class="material-symbols-outlined text-[16px] text-[#0a84ff]">send</span>
                     <span>Sent</span>
                 </div>
+                <div class="px-3 pt-6 pb-1 text-[11px] font-semibold text-mac-text-muted">Export & Code</div>
+                <div class="sidebar-item cursor-pointer" onclick="copySignatureVisual(this.querySelector('span'))">
+                    <span class="material-symbols-outlined text-[16px] text-[#0a84ff]">content_copy</span>
+                    <span>Copy Signature Card</span>
+                </div>
+                <div class="sidebar-item cursor-pointer" onclick="copySignatureCode(this.querySelector('span'))">
+                    <span class="material-symbols-outlined text-[16px] text-[#ff9f0a]">code</span>
+                    <span>Copy Raw HTML Code</span>
+                </div>
+                <a href="e-signature.html" target="_blank" class="sidebar-item !no-underline cursor-pointer">
+                    <span class="material-symbols-outlined text-[16px] text-[#bf5af2]">open_in_new</span>
+                    <span>View Raw Source</span>
+                </a>
+                <a href="https://github.com/ShivaSinghNagwanshi/E-Signature" target="_blank" class="sidebar-item !no-underline cursor-pointer">
+                    <span class="flex items-center justify-center w-[16px] h-[16px] text-[#d1d1d6]">
+                        <svg height="14" viewBox="0 0 16 16" width="14" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg>
+                    </span>
+                    <span>View on GitHub</span>
+                </a>
+                <a href="https://github.com/ShivaSinghNagwanshi/E-Signature/blob/main/CREDITS.md" target="_blank" class="sidebar-item !no-underline cursor-pointer">
+                    <span class="material-symbols-outlined text-[16px] text-[#32ade6]">info</span>
+                    <span>Credits</span>
+                </a>
+
+
             </div>
         </div>
                 <div class="w-[320px] bg-mac-list border-r border-mac-border flex flex-col flex-shrink-0 hidden md:flex">
                         <div class="h-14 px-4 py-2 border-b border-mac-border flex flex-col justify-center">
                 <div class="flex justify-between items-center">
                     <div class="flex items-center gap-2">
-                        <span id="sidebar-toggle" class="material-symbols-outlined text-[18px] text-[#a1a1a6] hover:text-white cursor-pointer hidden lg:block" title="Toggle Sidebar">dock_to_right</span>
+                        <span id="sidebar-toggle" class="material-symbols-outlined text-[18px] text-[#a1a1a6] hover:text-white cursor-pointer hidden lg:block" title="Toggle Sidebar" onclick="toggleSidebar()">dock_to_right</span>
                         <span class="font-semibold text-[13px]">All Sent</span>
                     </div>
                     <span class="material-symbols-outlined text-[18px] text-mac-text-muted cursor-pointer">filter_list</span>
@@ -231,8 +328,8 @@
                 <span class="text-[11px] text-mac-text-muted">49 messages</span>
             </div>
                         <div class="flex-1 overflow-hidden">
-                                <div class="bg-mac-blue text-white px-3 py-2 cursor-default flex gap-2">
-                    <div class="w-[10px] pt-1"></div>
+                                <div class="active-mail-glass text-white px-3 py-2 cursor-default flex gap-2 animate-drop-down-stagger" style="animation-delay: 0.6s;">
+                    <div class="w-[7px] pt-1"></div>
                     <div class="flex-1 min-w-0">
                         <div class="flex justify-between items-baseline mb-0.5">
                             <span class="font-semibold text-[13px] truncate pr-2">To: Client Name</span>
@@ -256,7 +353,9 @@
                         // so it perfectly clips off the bottom of the screen (illusion of infinite list).
                         // Assuming each skeleton item is roughly 85px tall
                         const numItems = Math.max(0, Math.floor(availableHeight / 85)) + 1;
-                        const skeleton = `<div class="px-3 py-3 border-b border-mac-border cursor-default flex gap-2">
+                        let html = "";
+                        for(let i = 0; i < numItems; i++) {
+                            html += `<div class="px-3 py-3 border-b border-mac-border cursor-default flex gap-2 animate-drop-down-stagger" style="animation-delay: ${0.6 + ((i+1) * 0.05)}s">
                                 <div class="w-[10px]"></div>
                                 <div class="flex-1 min-w-0">
                                     <div class="flex justify-between items-center mb-2">
@@ -268,9 +367,6 @@
                                     <div class="h-2 w-5/6 bg-[#2d2d2d] rounded animate-pulse"></div>
                                 </div>
                             </div>`;
-                        let html = "";
-                        for(let i = 0; i < numItems; i++) {
-                            html += skeleton;
                         }
                         container.innerHTML = html;
                     }
@@ -282,32 +378,38 @@
         </div>
                 <div class="flex-1 bg-mac-body flex flex-col min-w-0">
                         <div class="h-14 border-b border-mac-border flex justify-between items-center px-4 bg-mac-toolbar">
-                <div class="flex items-center gap-6">
-                    <span class="material-symbols-outlined text-[18px] text-[#a1a1a6] hover:text-white cursor-pointer hidden md:block">mail</span>
-                    <span class="material-symbols-outlined text-[18px] text-[#a1a1a6] hover:text-white cursor-pointer">edit_square</span>
+                <div id="header-icons-left" class="flex items-center gap-3 sm:gap-6">
+                    <span class="material-symbols-outlined text-[18px] text-[#a1a1a6] hover:text-white cursor-pointer">mail</span>
                     <span class="material-symbols-outlined text-[18px] text-[#a1a1a6] hover:text-white cursor-pointer">delete</span>
                     <span class="material-symbols-outlined text-[18px] text-[#a1a1a6] hover:text-white cursor-pointer hidden md:block">archive</span>
                     <span class="material-symbols-outlined text-[18px] text-[#a1a1a6] hover:text-white cursor-pointer">reply</span>
                     <span class="material-symbols-outlined text-[18px] text-[#a1a1a6] hover:text-white cursor-pointer hidden sm:block">reply_all</span>
                     <span class="material-symbols-outlined text-[18px] text-[#a1a1a6] hover:text-white cursor-pointer">forward</span>
-                    <span class="material-symbols-outlined text-[18px] text-[#30d158] cursor-pointer hidden sm:block">flag</span>
+                    <span class="material-symbols-outlined text-[18px] text-[#a1a1a6] hover:text-white cursor-pointer hidden sm:block">flag</span>
                     <span class="material-symbols-outlined text-[18px] text-[#a1a1a6] hover:text-white cursor-pointer hidden md:block">notifications_off</span>
-                    <div class="flex items-center gap-1 text-[#a1a1a6] hover:text-white cursor-pointer ml-2 hidden md:flex">
-                        <span class="material-symbols-outlined text-[18px]">folder</span>
-                        <span class="text-[12px]">Move to...</span>
-                    </div>
                 </div>
-                <div class="flex items-center gap-3">
-                    <div class="flex items-center bg-black/30 rounded px-2 py-1 border border-mac-border w-32 md:w-48">
+                <div class="flex items-center gap-3 sm:gap-5">
+                    <div id="toolbar-actions" class="flex items-center gap-3 sm:gap-5 lg:hidden">
+                        <span id="copy-visual" class="material-symbols-outlined text-[18px] text-[#0a84ff] hover:text-[#5e9cff] hover:scale-110 hover:drop-shadow-[0_0_8px_rgba(10,132,255,0.8)] transition-all duration-200 cursor-pointer animate-pop-in" style="animation-delay: 0.5s;" title="Copy Signature Card" onclick="copySignatureVisual(this)">content_copy</span>
+                        <span id="copy-code" class="material-symbols-outlined text-[18px] text-[#ff9f0a] hover:text-[#ffd60a] hover:scale-110 hover:drop-shadow-[0_0_8px_rgba(255,159,10,0.8)] transition-all duration-200 cursor-pointer animate-pop-in" style="animation-delay: 0.6s;" title="Copy Raw HTML Code" onclick="copySignatureCode(this)">code</span>
+                        <a href="e-signature.html" target="_blank" class="flex items-center animate-pop-in" style="animation-delay: 0.7s;" title="View Raw Source (e-signature.html)">
+                            <span id="view-source" class="material-symbols-outlined text-[18px] text-[#bf5af2] hover:text-[#d78aff] hover:scale-110 hover:drop-shadow-[0_0_8px_rgba(191,90,242,0.8)] transition-all duration-200 cursor-pointer">open_in_new</span>
+                        </a>
+                        <a href="https://github.com/ShivaSinghNagwanshi/E-Signature" target="_blank" class="text-[#a1a1a6] hover:text-white hover:scale-110 hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.8)] transition-all duration-200 cursor-pointer flex items-center animate-pop-in" style="animation-delay: 0.8s;" title="Star on GitHub">
+                            <svg height="18" viewBox="0 0 16 16" width="18" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg>
+                        </a>
+                        <div class="h-5 w-px bg-mac-border mx-1"></div>
+                    </div>
+                    <div class="items-center rounded-md px-2 py-[5px] border hidden lg:flex animate-expand-search" style="animation-delay: 1.0s; width: 32px; background-color: transparent; border-color: transparent; opacity: 0;">
                         <span class="material-symbols-outlined text-[16px] text-mac-text-muted">search</span>
-                        <input type="text" placeholder="Search" class="bg-transparent border-none text-xs text-white placeholder-mac-text-muted focus:ring-0 w-full px-2" readonly>
+                        <input type="text" placeholder="Search" class="bg-transparent border-none text-xs text-white placeholder-mac-text-muted focus:ring-0 focus:outline-none outline-none w-full px-2" readonly>
                     </div>
                 </div>
             </div>
                         <div class="flex-1 overflow-y-auto px-6 py-6 text-[13px]">
                                 <div class="flex gap-4">
-                                        <div class="w-10 h-10 rounded-full flex-shrink-0 flex items-center justify-center overflow-hidden border border-[#333]">
-                        <img src="{{ asset_base_url }}/{{ profile_filename }}" alt="Profile" class="w-full h-full object-cover">
+                                        <div class="w-12 h-12 rounded-full flex-shrink-0 flex items-center justify-center overflow-hidden border border-[#333]">
+                        <img src="{{ asset_base_url }}/{{ profile_png_filename }}" alt="Profile" class="w-full h-full object-cover">
                     </div>
                     <div class="flex-1 min-w-0">
                         <div class="flex justify-between items-baseline mb-1">
@@ -321,12 +423,12 @@
                     </div>
                 </div>
                 <div class="w-full h-[1px] bg-mac-border my-5"></div>
-                                <div class="text-[#d1d1d6] leading-relaxed">
-                    <p class="mb-4">Dear Client,</p>
-                    <p class="mb-4">I've attached the latest project updates for your final review. The deliverables align with our recent discussion regarding the premium UI rollout.</p>
-                    <p class="mb-6">Please let me know if you need any adjustments before we proceed to launch.</p>
-                    <p class="mb-8">Best regards,</p>
-                    <div class="preview-signature w-full">
+                                <div class="text-[#d1d1d6] leading-relaxed email-body-content">
+                    <p class="mb-4 email-body-p">Dear Client,</p>
+                    <p class="mb-4 email-body-p">I've attached the latest project updates for your final review. The deliverables align with our recent discussion regarding the premium UI rollout.</p>
+                    <p class="mb-6 email-body-p">Please let me know if you need any adjustments before we proceed to launch.</p>
+                    <p class="mb-8 email-body-p">Best regards,</p>
+                    <div class="preview-signature w-full opacity-0" id="signature-container">
                         {{ signature_html }}
                     </div>
                 </div>
@@ -334,9 +436,186 @@
         </div>
     </div>
     <script>
-        document.getElementById('sidebar-toggle').addEventListener('click', function() {
-            document.querySelector('.mac-window').classList.toggle('sidebar-hidden');
+        // Clipboard Actions
+        function toggleSidebar() {
+            const macWindow = document.querySelector('.mac-window');
+            const toggleBtn = document.getElementById('sidebar-toggle');
+            const toolbarActions = document.getElementById('toolbar-actions');
+            const sidebarChildren = document.querySelectorAll('#column-1 .overflow-y-auto > div, #column-1 .overflow-y-auto > a');
+            
+            if (macWindow.classList.contains('sidebar-hidden')) {
+                // OPEN SIDEBAR
+                macWindow.classList.remove('sidebar-hidden');
+                toggleBtn.classList.remove('flip-active');
+                
+                // Animate header actions out first
+                const toolbarChildren = toolbarActions.children;
+                Array.from(toolbarChildren).forEach((child, index) => {
+                    child.style.animation = 'none';
+                    child.offsetHeight;
+                    child.style.animation = null;
+                    // Reverse sequence stagger for pop out
+                    child.style.animationDelay = `${(3 - index) * 0.05}s`;
+                    child.classList.remove('animate-pop-in');
+                    child.classList.add('animate-pop-out');
+                });
+                
+                // Hide header actions container after animations finish
+                setTimeout(() => {
+                    toolbarActions.classList.add('lg:hidden');
+                    Array.from(toolbarChildren).forEach(child => {
+                        child.classList.remove('animate-pop-out');
+                    });
+                }, 300);
+                
+                sidebarChildren.forEach((child, index) => {
+                    child.style.animation = 'none';
+                    child.offsetHeight; 
+                    child.style.animation = null;
+                    child.style.animationDelay = `${0.3 + (index * 0.04)}s`;
+                    child.classList.remove('animate-reverse-stagger');
+                    child.classList.add('animate-drop-down-stagger');
+                });
+            } else {
+                // CLOSE SIDEBAR (with reverse waterfall)
+                toggleBtn.classList.add('flip-active');
+                
+                sidebarChildren.forEach((child, index) => {
+                    child.style.animation = 'none';
+                    child.offsetHeight;
+                    child.style.animation = null;
+                    child.style.animationDelay = `${(index * 0.02)}s`;
+                    child.classList.remove('animate-drop-down-stagger');
+                    child.classList.add('animate-reverse-stagger');
+                });
+                
+                setTimeout(() => {
+                    macWindow.classList.add('sidebar-hidden');
+                    toolbarActions.classList.remove('lg:hidden');
+                    // Trigger pop-in for header actions
+                    const toolbarChildren = toolbarActions.children;
+                    Array.from(toolbarChildren).forEach((child, index) => {
+                        child.style.animation = 'none';
+                        child.offsetHeight;
+                        child.style.animation = null;
+                        child.style.animationDelay = `${index * 0.05}s`;
+                        child.classList.remove('animate-pop-out');
+                        child.classList.add('animate-pop-in');
+                    });
+                }, 300); // Start hiding sidebar slightly after items start fading out
+            }
+        }
+
+        async function copySignatureVisual(btn) {
+            // Get raw HTML
+            const sigHTML = document.querySelector('.preview-signature').innerHTML;
+            const originalIcon = btn.innerText;
+            try {
+                // Try modern Clipboard API for rich HTML
+                const blobHtml = new Blob([sigHTML], { type: 'text/html' });
+                const blobText = new Blob([sigHTML], { type: 'text/plain' });
+                const data = [new window.ClipboardItem({ 'text/html': blobHtml, 'text/plain': blobText })];
+                await navigator.clipboard.write(data);
+                
+                btn.innerText = 'check';
+                setTimeout(() => { btn.innerText = originalIcon; }, 2000);
+            } catch (err) {
+                // Fallback for older browsers
+                const container = document.createElement('div');
+                container.innerHTML = sigHTML;
+                document.body.appendChild(container);
+                const range = document.createRange();
+                range.selectNode(container);
+                window.getSelection().removeAllRanges();
+                window.getSelection().addRange(range);
+                document.execCommand('copy');
+                window.getSelection().removeAllRanges();
+                document.body.removeChild(container);
+                
+                btn.innerText = 'check';
+                setTimeout(() => { btn.innerText = originalIcon; }, 2000);
+            }
+        }
+
+        async function copySignatureCode(btn) {
+            const sigHTML = document.querySelector('.preview-signature').innerHTML.trim();
+            const originalIcon = btn.innerText;
+            try {
+                await navigator.clipboard.writeText(sigHTML);
+                btn.innerText = 'check';
+                setTimeout(() => { btn.innerText = originalIcon; }, 2000);
+            } catch (err) {
+                alert('Failed to copy code.');
+            }
+        }
+
+        // DOMContentLoaded for Animations
+        document.addEventListener('DOMContentLoaded', () => {
+            // Trigger Sidebar Physical Open on Load
+            setTimeout(() => {
+                document.querySelector('.mac-window').classList.remove('sidebar-hidden');
+            }, 100);
+
+            // Animate Sidebar Items
+            const sidebarChildren = document.querySelectorAll('#column-1 .overflow-y-auto > div, #column-1 .overflow-y-auto > a');
+            sidebarChildren.forEach((child, index) => {
+                child.classList.add('animate-drop-down-stagger');
+                child.style.animationDelay = `${0.5 + (index * 0.04)}s`;
+            });
+
+            // Animate Header Icons
+            const headerIcons = document.querySelectorAll('#header-icons-left > span');
+            headerIcons.forEach((icon, index) => {
+                icon.classList.add('animate-drop-down-stagger');
+                icon.style.animationDelay = `${0.5 + (index * 0.08)}s`;
+            });
+
+            // Animate Middle Header (All Sent & 49 messages)
+            const middleHeaderItems = document.querySelectorAll('.w-\\[320px\\] > .h-14 > div, .w-\\[320px\\] > .h-14 > span');
+            middleHeaderItems.forEach((child, index) => {
+                child.classList.add('animate-drop-down-stagger');
+                child.style.animationDelay = `${0.5 + (index * 0.1)}s`;
+            });
+
+            // Animate Right Header (Profile Info)
+            const rightHeaderItems = document.querySelectorAll('.overflow-y-auto .flex.gap-4 > div');
+            rightHeaderItems.forEach((child, index) => {
+                child.classList.add('animate-drop-down-stagger');
+                child.style.animationDelay = `${0.7 + (index * 0.1)}s`;
+            });
+
+            // Typewriter Effect
+            const paragraphs = document.querySelectorAll('.email-body-p');
+            paragraphs.forEach(p => {
+                p.setAttribute('data-text', p.innerHTML);
+                p.innerHTML = '';
+            });
+
+            let currentP = 0;
+            let charIndex = 0;
+
+            function typeWriter() {
+                if (currentP < paragraphs.length) {
+                    const p = paragraphs[currentP];
+                    const text = p.getAttribute('data-text');
+                    
+                    if (charIndex < text.length) {
+                        p.innerHTML += text.charAt(charIndex);
+                        charIndex++;
+                        setTimeout(typeWriter, 5); // Fast speed
+                    } else {
+                        currentP++;
+                        charIndex = 0;
+                        setTimeout(typeWriter, 5);
+                    }
+                } else {
+                    // Start signature animation when typewriter completes
+                    document.getElementById('signature-container').classList.add('animate-slide-up-fade');
+                }
+            }
+            setTimeout(typeWriter, 1200); // Wait 1.2s for UI to load before typing
         });
+
     </script>
 </body>
 </html>
