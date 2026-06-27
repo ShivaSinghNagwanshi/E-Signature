@@ -1,0 +1,74 @@
+{
+    "personal": {
+        "full_name": "John Doe",
+        "job_title": "Senior Software Engineer",
+        "company": "Tech Innovations Inc.",
+        "email": "john.doe@example.com",
+        "pronouns": "he/him"
+    },
+    "contact": {
+        "website": "https://example.com",
+        "website_display": "example.com"
+    },
+    "social_links": {
+        "website": "https://example.com",
+        "linkedin": "https://www.linkedin.com/in/johndoe/",
+        "github": "https://github.com/johndoe",
+        "instagram": "https://www.instagram.com/johndoe",
+        "x": "https://x.com/johndoe"
+    },
+    "social_order": [
+        "website",
+        "linkedin",
+        "github",
+        "x",
+        "instagram"
+    ],
+    "assets": {
+        "base_url_local": "./assets",
+        "base_url_hosted": "https://example.com/assets",
+        "profile_photo": "signature-profile",
+        "logo": "signature-logo",
+        "note": "Generator auto-detects .gif vs .png in the assets folder. If signature-profile.gif exists, it uses that; otherwise falls back to .png."
+    },
+    "active_theme": "vision-os",
+    "themes": {
+        "glassmorphism": {
+            "accent_color": "#6366f1",
+            "accent_gradient": "linear-gradient(135deg, #6366f1, #8b5cf6)",
+            "text_primary": "#1a1a2e",
+            "text_secondary": "#64748b",
+            "text_muted": "#94a3b8"
+        },
+        "vision-os": {
+            "accent_color": "#a5b4fc",
+            "accent_gradient": "linear-gradient(135deg, #818cf8, #c084fc)",
+            "text_primary": "#ffffff",
+            "text_secondary": "#e2e8f0",
+            "text_muted": "#cbd5e1"
+        }
+    },
+    "design": {
+        "border_color": "rgba(255, 255, 255, 0.18)",
+        "card_background": "rgba(255, 255, 255, 0.72)",
+        "card_backdrop_blur": "20px",
+        "card_border_radius": "16px",
+        "card_shadow": "0 8px 32px rgba(0, 0, 0, 0.08)",
+        "divider_color": "rgba(99, 102, 241, 0.3)",
+        "font_family": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
+        "profile_shape": "rounded-square",
+        "profile_size": 110,
+        "icon_size": 20,
+        "icon_color": "#64748b"
+    },
+    "cta": {
+        "enabled": true,
+        "text": "Visit Portfolio",
+        "url": "https://example.com",
+        "style": "pill"
+    },
+    "hosting": {
+        "repo_name": "E-Signature",
+        "base_url": "https://example.com/e-signature"
+    }
+}

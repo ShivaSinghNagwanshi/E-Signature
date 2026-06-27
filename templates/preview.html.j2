@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>E-Signature | Preview</title>
+    <meta name="description" content="E-Signature for {{ personal.full_name }}, {{ personal.job_title }} at {{ personal.company }}" />
+    <meta name="theme-color" content="{{ design.accent_color }}" />
+    <meta property="og:site_name" content="E-Signature" />
+    <meta property="og:type" content="profile" />
+    <meta property="og:title" content="{{ personal.full_name }} | {{ personal.job_title }}" />
+    <meta property="og:description" content="E-Signature for {{ personal.full_name }}, {{ personal.job_title }} at {{ personal.company }}" />
+    {% if hosting.base_url %}
+    <meta property="og:url" content="{{ hosting.base_url }}" />
+    <meta property="og:image" content="{{ hosting.base_url }}/e-signature.png" />
+    <meta property="og:image:width" content="800" />
+    <meta property="og:image:height" content="600" />
+    <meta property="og:image:alt" content="E-Signature Preview for {{ personal.full_name }}" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="{{ personal.full_name }} | {{ personal.job_title }}" />
+    <meta name="twitter:description" content="E-Signature for {{ personal.full_name }}, {{ personal.job_title }} at {{ personal.company }}" />
+    <meta name="twitter:image" content="{{ hosting.base_url }}/e-signature.png" />
+    {% endif %}
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
+                    },
+                    colors: {
+                        'mac-sidebar': '#1e1e1e',
+                        'mac-list': '#1c1c1e',
+                        'mac-body': '#1e1e1e',
+                        'mac-border': '#333333',
+                        'mac-blue': '#0a60ff',
+                        'mac-text-muted': '#8e8e93',
+                        'mac-toolbar': '#252525'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #000;
+            margin: 0;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        /* Subtle ambient glow behind the window */
+        .ambient-bg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80vw;
+            height: 80vh;
+            background: radial-gradient(circle, rgba(10,96,255,0.15) 0%, rgba(0,0,0,0) 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+        .mac-window {
+            background: #1e1e1e;
+            border: 1px solid #333;
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            z-index: 10;
+            display: flex;
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 14px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background-clip: padding-box;
+            border: 4px solid transparent;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 100px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: rgba(255, 255, 255, 0.4);
+        }
+        /* Material Icons outlined style tweaks to look like SF Symbols */
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 20;
+        }
+        .traffic-light {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .close { background: #ff5f56; border: 1px solid #e0443e; }
+        .minimize { background: #ffbd2e; border: 1px solid #dea123; }
+        .maximize { background: #27c93f; border: 1px solid #1aab29; }
+        .sidebar-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 4px 12px;
+            margin: 2px 8px;
+            border-radius: 6px;
+            cursor: default;
+            color: #d1d1d6;
+            font-size: 13px;
+        }
+        .sidebar-item:hover {
+            background: rgba(255,255,255,0.1);
+        }
+        .sidebar-item.active {
+            background: rgba(255,255,255,0.15);
+            color: white;
+        }
+        /* Override MSO specifics for preview rendering */
+        .preview-signature table {
+            border-collapse: collapse;
+            margin: 0;
+            padding: 0;
+        }
+        .preview-signature td {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        /* Prevent Tailwind from squishing signature images */
+        .preview-signature img {
+            max-width: none !important;
+        }
+        /* Transitions for Sidebar Toggle */
+        #column-1 {
+            transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .sidebar-hidden #column-1 {
+            margin-left: -220px; /* Hide by pulling left */
+        }
+    </style>
+</head>
+<body>
+    <div class="ambient-bg"></div>
+    <div class="mac-window w-[1300px] h-[850px] max-w-[95vw] max-h-[95vh] text-white">
+                <div id="column-1" class="w-[220px] bg-mac-sidebar border-r border-mac-border flex flex-col flex-shrink-0 hidden lg:flex">
+                        <div class="h-14 flex items-center px-4 gap-[8px] pt-1">
+                <div class="traffic-light close"></div>
+                <div class="traffic-light minimize"></div>
+                <div class="traffic-light maximize"></div>
+            </div>
+                        <div class="flex-1 overflow-y-auto pb-4">
+                <div class="px-3 pt-2 pb-1 text-[11px] font-semibold text-mac-text-muted flex items-center justify-between group">
+                    <span>Favorites</span>
+                    <span class="material-symbols-outlined text-[14px] opacity-0 group-hover:opacity-100 cursor-pointer">add_circle</span>
+                </div>
+                <div class="sidebar-item">
+                    <span class="material-symbols-outlined text-[16px] text-[#0a84ff]">inbox</span>
+                    <span>All Inboxes</span>
+                </div>
+                <div class="sidebar-item">
+                    <span class="material-symbols-outlined text-[16px] text-[#0a84ff]">cloud</span>
+                    <span>iCloud</span>
+                </div>
+                <div class="sidebar-item">
+                    <span class="material-symbols-outlined text-[16px] text-[#0a84ff]">mail</span>
+                    <span>Exchange</span>
+                </div>
+                <div class="px-3 pt-4 pb-1 text-[11px] font-semibold text-mac-text-muted flex items-center gap-1 cursor-pointer">
+                    <span class="material-symbols-outlined text-[12px]">navigate_next</span>
+                    <span>VIPs</span>
+                </div>
+                <div class="sidebar-item active mt-1">
+                    <span class="material-symbols-outlined text-[16px] text-[#30d158]">send</span>
+                    <span>All Sent</span>
+                </div>
+                <div class="sidebar-item">
+                    <span class="material-symbols-outlined text-[16px] text-[#ff9f0a]">flag</span>
+                    <span>Flagged</span>
+                </div>
+                <div class="sidebar-item">
+                    <span class="material-symbols-outlined text-[16px] text-[#32ade6]">schedule</span>
+                    <span>Remind Me</span>
+                </div>
+                <div class="sidebar-item">
+                    <span class="material-symbols-outlined text-[16px] text-[#30d158]">send</span>
+                    <span>Send Later</span>
+                </div>
+                <div class="px-3 pt-1 pb-1 text-[11px] font-semibold text-mac-text-muted flex items-center gap-1 cursor-pointer">
+                    <span class="material-symbols-outlined text-[12px]">navigate_next</span>
+                    <span>All Drafts</span>
+                </div>
+                <div class="px-3 pt-6 pb-1 text-[11px] font-semibold text-mac-text-muted">Smart Mailboxes</div>
+                <div class="sidebar-item">
+                    <span class="material-symbols-outlined text-[16px] text-[#bf5af2]">settings</span>
+                    <span>Today</span>
+                </div>
+                <div class="sidebar-item">
+                    <span class="material-symbols-outlined text-[16px] text-[#bf5af2]">settings</span>
+                    <span>Book Club</span>
+                </div>
+                <div class="px-3 pt-6 pb-1 text-[11px] font-semibold text-mac-text-muted">iCloud</div>
+                <div class="sidebar-item">
+                    <span class="material-symbols-outlined text-[16px] text-[#0a84ff]">inbox</span>
+                    <span>Inbox</span>
+                </div>
+                <div class="sidebar-item">
+                    <span class="material-symbols-outlined text-[16px] text-[#0a84ff]">drafts</span>
+                    <span>Drafts</span>
+                </div>
+                <div class="sidebar-item">
+                    <span class="material-symbols-outlined text-[16px] text-[#0a84ff]">send</span>
+                    <span>Sent</span>
+                </div>
+            </div>
+        </div>
+                <div class="w-[320px] bg-mac-list border-r border-mac-border flex flex-col flex-shrink-0 hidden md:flex">
+                        <div class="h-14 px-4 py-2 border-b border-mac-border flex flex-col justify-center">
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center gap-2">
+                        <span id="sidebar-toggle" class="material-symbols-outlined text-[18px] text-[#a1a1a6] hover:text-white cursor-pointer hidden lg:block" title="Toggle Sidebar">dock_to_right</span>
+                        <span class="font-semibold text-[13px]">All Sent</span>
+                    </div>
+                    <span class="material-symbols-outlined text-[18px] text-mac-text-muted cursor-pointer">filter_list</span>
+                </div>
+                <span class="text-[11px] text-mac-text-muted">49 messages</span>
+            </div>
+                        <div class="flex-1 overflow-hidden">
+                                <div class="bg-mac-blue text-white px-3 py-2 cursor-default flex gap-2">
+                    <div class="w-[10px] pt-1"></div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex justify-between items-baseline mb-0.5">
+                            <span class="font-semibold text-[13px] truncate pr-2">To: Client Name</span>
+                            <span class="text-[11px] flex-shrink-0 text-white/90">Sent - iCloud  10:23 AM</span>
+                        </div>
+                        <div class="font-semibold text-[12px] mb-0.5 truncate">Project Updates & Final Review</div>
+                        <div class="text-[12px] text-white/80 leading-snug line-clamp-2 opacity-90">
+                            I've attached the latest project updates for your final review. The deliverables align with our...
+                        </div>
+                    </div>
+                </div>
+                                                <div id="skeleton-container"></div>
+                <script>
+                    function fillSkeletons() {
+                        const container = document.getElementById("skeleton-container");
+                        const scrollContainer = container.parentElement;
+                        // Calculate exact available height: container height minus active email height
+                        const activeEmailHeight = scrollContainer.children[0].offsetHeight;
+                        const availableHeight = scrollContainer.clientHeight - activeEmailHeight;
+                        // Calculate exact number of items using Math.floor, then add 1 extra skeleton 
+                        // so it perfectly clips off the bottom of the screen (illusion of infinite list).
+                        // Assuming each skeleton item is roughly 85px tall
+                        const numItems = Math.max(0, Math.floor(availableHeight / 85)) + 1;
+                        const skeleton = `<div class="px-3 py-3 border-b border-mac-border cursor-default flex gap-2">
+                                <div class="w-[10px]"></div>
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex justify-between items-center mb-2">
+                                        <div class="h-3 w-24 bg-[#333] rounded animate-pulse"></div>
+                                        <div class="h-2 w-12 bg-[#2d2d2d] rounded animate-pulse"></div>
+                                    </div>
+                                    <div class="h-2.5 w-3/4 bg-[#333] rounded animate-pulse mb-2"></div>
+                                    <div class="h-2 w-full bg-[#2d2d2d] rounded animate-pulse mb-1"></div>
+                                    <div class="h-2 w-5/6 bg-[#2d2d2d] rounded animate-pulse"></div>
+                                </div>
+                            </div>`;
+                        let html = "";
+                        for(let i = 0; i < numItems; i++) {
+                            html += skeleton;
+                        }
+                        container.innerHTML = html;
+                    }
+                    // Generate exact amount on load and re-calculate if window is resized
+                    document.addEventListener("DOMContentLoaded", fillSkeletons);
+                    window.addEventListener("resize", fillSkeletons);
+                </script>
+            </div>
+        </div>
+                <div class="flex-1 bg-mac-body flex flex-col min-w-0">
+                        <div class="h-14 border-b border-mac-border flex justify-between items-center px-4 bg-mac-toolbar">
+                <div class="flex items-center gap-6">
+                    <span class="material-symbols-outlined text-[18px] text-[#a1a1a6] hover:text-white cursor-pointer hidden md:block">mail</span>
+                    <span class="material-symbols-outlined text-[18px] text-[#a1a1a6] hover:text-white cursor-pointer">edit_square</span>
+                    <span class="material-symbols-outlined text-[18px] text-[#a1a1a6] hover:text-white cursor-pointer">delete</span>
+                    <span class="material-symbols-outlined text-[18px] text-[#a1a1a6] hover:text-white cursor-pointer hidden md:block">archive</span>
+                    <span class="material-symbols-outlined text-[18px] text-[#a1a1a6] hover:text-white cursor-pointer">reply</span>
+                    <span class="material-symbols-outlined text-[18px] text-[#a1a1a6] hover:text-white cursor-pointer hidden sm:block">reply_all</span>
+                    <span class="material-symbols-outlined text-[18px] text-[#a1a1a6] hover:text-white cursor-pointer">forward</span>
+                    <span class="material-symbols-outlined text-[18px] text-[#30d158] cursor-pointer hidden sm:block">flag</span>
+                    <span class="material-symbols-outlined text-[18px] text-[#a1a1a6] hover:text-white cursor-pointer hidden md:block">notifications_off</span>
+                    <div class="flex items-center gap-1 text-[#a1a1a6] hover:text-white cursor-pointer ml-2 hidden md:flex">
+                        <span class="material-symbols-outlined text-[18px]">folder</span>
+                        <span class="text-[12px]">Move to...</span>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <div class="flex items-center bg-black/30 rounded px-2 py-1 border border-mac-border w-32 md:w-48">
+                        <span class="material-symbols-outlined text-[16px] text-mac-text-muted">search</span>
+                        <input type="text" placeholder="Search" class="bg-transparent border-none text-xs text-white placeholder-mac-text-muted focus:ring-0 w-full px-2" readonly>
+                    </div>
+                </div>
+            </div>
+                        <div class="flex-1 overflow-y-auto px-6 py-6 text-[13px]">
+                                <div class="flex gap-4">
+                                        <div class="w-10 h-10 rounded-full flex-shrink-0 flex items-center justify-center overflow-hidden border border-[#333]">
+                        <img src="{{ asset_base_url }}/{{ profile_filename }}" alt="Profile" class="w-full h-full object-cover">
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex justify-between items-baseline mb-1">
+                            <span class="font-semibold text-[14px] text-white">{{ personal.full_name }}</span>
+                            <span class="text-[12px] text-mac-text-muted">Today at 10:23 AM</span>
+                        </div>
+                        <div class="text-[13px] font-semibold text-white mb-1">Project Updates & Final Review</div>
+                        <div class="text-[12px] text-mac-text-muted">
+                            To: <span class="text-[#d1d1d6]">Client Name</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-full h-[1px] bg-mac-border my-5"></div>
+                                <div class="text-[#d1d1d6] leading-relaxed">
+                    <p class="mb-4">Dear Client,</p>
+                    <p class="mb-4">I've attached the latest project updates for your final review. The deliverables align with our recent discussion regarding the premium UI rollout.</p>
+                    <p class="mb-6">Please let me know if you need any adjustments before we proceed to launch.</p>
+                    <p class="mb-8">Best regards,</p>
+                    <div class="preview-signature w-full">
+                        {{ signature_html }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.getElementById('sidebar-toggle').addEventListener('click', function() {
+            document.querySelector('.mac-window').classList.toggle('sidebar-hidden');
+        });
+    </script>
+</body>
+</html>

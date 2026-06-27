@@ -36,7 +36,7 @@
                                 <a href="{{ social_links[icon_key] }}" target="_blank"
                                   style="text-decoration: none; display: inline-block;">
                                   <img alt="{{ icon_key }}"
-                                    src="{{ asset_base_url }}/icons/{{ icon_key }}.{{ icon_extensions.get(icon_key, 'png') }}"
+                                    src="{{ asset_base_url }}/{{ icon_paths[icon_key] }}"
                                     width="{{ design.icon_size }}"
                                     height="{{ design.icon_size }}"
                                     style="display: block; border: 0; outline: none;">
@@ -75,7 +75,7 @@
                                             <td valign="middle" style="padding-left: 0;">
                                               <span class="responsive-name" style="font-weight: 800; font-style: normal; color: {{ design.text_primary }}; font-size: 18px; letter-spacing: -0.5px; font-family: {{ design.font_family }};">{{ personal.full_name }}</span>
                                               {% if verified_icon_exists %}
-                                              &nbsp;<img alt="Verified" src="{{ asset_base_url }}/icons/verified.{{ icon_extensions.get('verified', 'png') }}" width="16" height="16" style="vertical-align: text-bottom; display: inline; border: 0;">
+                                              &nbsp;<img alt="Verified" src="{{ asset_base_url }}/{{ icon_paths['verified'] }}" width="16" height="16" style="vertical-align: text-bottom; display: inline; border: 0;">
                                               {% endif %}
                                             </td>
                                           </tr>
