@@ -24,3 +24,7 @@ Animated social media icons (using the Lottie Framework) were sourced from **[Us
 ## Photography
 
 The blurred green background image used in the preview UI is ["A blurry photo of a green background"](https://unsplash.com/photos/a-blurry-photo-of-a-green-background-2hB-jhXLd3c) by **[Kunal Patel](https://unsplash.com/@kunalptll)**, licensed under the **[Unsplash License](https://unsplash.com/license)**.
+
+## Artificial Intelligence
+
+This project was built with the assistance of advanced Artificial Intelligence models, specifically **Google Gemini 3.1 Pro** and **Anthropic Claude Opus 4.8**, to help architect, design, and refine the codebase.

@@ -169,39 +169,48 @@ def generate_preview(config: dict, signature_html: str, use_local: bool = False,
     context["signature_html"] = signature_html
     return template.render(**context)
 
-def generate_png_screenshot(html_path: Path, output_png: Path):
-    """Generate a high-res PNG screenshot of the signature for metadata limits (e.g. 300KB WhatsApp)."""
+def generate_png_screenshot(html_path: Path, output_png: Path, meta_png: Path):
+    """Generate a high-res PNG screenshot and a compressed meta PNG (e.g. for WhatsApp)."""
     try:
         from playwright.sync_api import sync_playwright
     except ImportError:
         print("  ⚠️  Playwright not installed. Skipping PNG generation. (pip install playwright)")
         return
         
-    print("  📸 Generating highest quality PNG screenshot...")
+    print("  📸 Generating PNG screenshots...")
     try:
         with sync_playwright() as p:
-            for scale in [3, 2, 1]:
-                browser = p.chromium.launch(headless=True)
-                context = browser.new_context(device_scale_factor=scale)
-                page = context.new_page()
+            browser = p.chromium.launch(headless=True)
+            uri = f"file:///{html_path.absolute().as_posix()}"
+            
+            # Generate high-res (3x) for the main download
+            context_high = browser.new_context(device_scale_factor=3)
+            page_high = context_high.new_page()
+            page_high.set_viewport_size({"width": 800, "height": 600})
+            page_high.goto(uri)
+            page_high.wait_for_load_state("networkidle")
+            page_high.locator("table").first.screenshot(path=output_png, omit_background=True)
+            print(f"  ✅ Generated high-res PNG (3x): {output_png.name} ({output_png.stat().st_size / 1024:.1f} KB)")
+            context_high.close()
+
+            # WhatsApp metadata limit is ~300KB. Try 2x, then 1x resolution for meta.
+            for scale in [2, 1]:
+                context_meta = browser.new_context(device_scale_factor=scale)
+                page_meta = context_meta.new_page()
+                page_meta.set_viewport_size({"width": 800, "height": 600})
+                page_meta.goto(uri)
+                page_meta.wait_for_load_state("networkidle")
+                page_meta.locator("table").first.screenshot(path=meta_png, omit_background=True)
+                context_meta.close()
                 
-                page.set_viewport_size({"width": 800, "height": 600})
-                uri = f"file:///{html_path.absolute().as_posix()}"
-                page.goto(uri)
-                page.wait_for_load_state("networkidle")
-                
-                element = page.locator("table").first
-                element.screenshot(path=output_png, omit_background=True)
-                
-                browser.close()
-                
-                size_kb = output_png.stat().st_size / 1024
+                size_kb = meta_png.stat().st_size / 1024
                 if size_kb <= 290 or scale == 1:
-                    print(f"  ✅ Generated PNG ({scale}x resolution): {output_png.name} ({size_kb:.1f} KB)")
+                    print(f"  ✅ Generated meta PNG ({scale}x): {meta_png.name} ({size_kb:.1f} KB)")
                     break
                 else:
-                    print(f"  🔄 {scale}x was {size_kb:.1f} KB (too large). Trying lower scale...")
+                    print(f"  🔄 Meta {scale}x was {size_kb:.1f} KB (too large). Trying lower scale...")
                     
+            browser.close()
     except Exception as e:
         print(f"  ❌ Error generating PNG: {e}")
 
@@ -255,7 +264,8 @@ def main():
     print(f"  ✅ Generated: {output_path}")
     print(f"  📦 Size: {file_size} bytes ({file_size / 1024:.1f} KB)")
     png_path = PROJECT_ROOT / "e-signature.png"
-    generate_png_screenshot(output_path, png_path)
+    meta_path = PROJECT_ROOT / "e-signature-meta.png"
+    generate_png_screenshot(output_path, png_path, meta_path)
     if args.preview:
         preview_html = generate_preview(config, html, use_local=args.local, force_png=args.png)
         if preview_html:

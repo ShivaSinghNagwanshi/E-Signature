@@ -1,4 +1,6 @@
-# E-Signature Generator
+# E-Signature
+
+![E-Signature](e-signature.png)
 
 A highly customizable, responsive HTML email signature generator. This project takes configuration data and compiles it into an HTML email signature, along with an Apple Mail-inspired preview interface.
 
@@ -7,7 +9,8 @@ A highly customizable, responsive HTML email signature generator. This project t
 - **HTML Email Layout**: Uses `<table>` based structures with inline CSS to ensure consistent rendering across major email clients (Gmail, Outlook, Apple Mail, etc.).
 - **Interactive Preview UI**: Generates a responsive, dark-mode Apple Mail mockup to preview the signature in a typical email client context.
 - **Dynamic Asset Resolution**: Supports both static (PNG/JPG) and animated (GIF) social media icons, detecting and linking them based on configuration.
-- **Config-Driven Architecture**: Manage names, titles, colors, and layout preferences entirely through `config.json`.
+- **Config-Driven Architecture**: Manage names, titles, colors, and layout preferences entirely through `config.json`. The included `config.json` contains generic filler data so you can easily fork this repository and swap in your own details to make it your own!
+- **GitHub Pages Ready**: Includes a pre-configured `.github/workflows/static.yml` action to seamlessly deploy your signature preview and assets to GitHub Pages.
 
 ## Tech Stack
 
@@ -180,6 +183,8 @@ GitHub Pages is a quick way to host the signature directly from the repository.
 ### Missing Assets in Preview
 **Error:** The preview UI shows broken image links locally.
 **Solution:** Ensure you generated the files using the `--local` flag (`python e-signature.py --local --preview`). If you omit the flag, the HTML expects the assets to be hosted on your production domain.
-
 ## License and Credits
+
+This project is open-source and available under the [MIT License](LICENSE). Feel free to fork, customize, and use it for your own personal or commercial projects.
+
 See `CREDITS.md` for full attribution, including the Apple Mail Figma mockup design by Austin Condiff (CC BY 4.0), and iconography from Icons8 and UseAnimations.
