@@ -1,5 +1,4 @@
 <style type="text/css">
-  /* Responsive styles for modern clients */
   @media screen and (max-width: 480px) {
     .responsive-logo { width: 45px !important; min-width: 45px !important; }
     .responsive-name { font-size: 15px !important; }
@@ -7,13 +6,15 @@
     .responsive-profile { width: 75px !important; height: auto !important; }
     .responsive-card-padding { padding: 12px 10px !important; }
     .responsive-gap { padding-left: 8px !important; padding-right: 8px !important; }
+    .responsive-nowrap { white-space: normal !important; }
   }
 </style>
-<table cellpadding="0" cellspacing="0" border="0" {% if background_filename %}background="{{ asset_base_url }}/{{ background_filename }}"{% endif %}
-  style="border-collapse: collapse; font-size: 10px; font-family: {{ design.font_family }}; width: 100%; max-width: 600px; {% if background_filename %}background-image: url('{{ asset_base_url }}/{{ background_filename }}'); background-size: cover; background-position: center; background-repeat: no-repeat;{% else %}background: linear-gradient(120deg, #f6f8fd 0%, #f1f5f9 100%);{% endif %} background-color: #000000; border-radius: 16px; padding: 24px;">
+<table cellpadding="0" cellspacing="0" border="0"
+  style="border-collapse: collapse; font-size: 10px; font-family: {{ design.font_family }}; width: 100%; max-width: 600px;">
   <tbody>
     <tr>
-      <td align="center" style="line-height: 16px; font-family: {{ design.font_family }}; border-collapse: collapse; padding: 16px;">
+      <td align="center" {% if background_filename %}background="{{ asset_base_url }}/{{ background_filename }}"{% endif %}
+        style="line-height: 16px; font-family: {{ design.font_family }}; border-collapse: collapse; padding: 24px; border-radius: 16px; {% if background_filename %}background-image: url('{{ asset_base_url }}/{{ background_filename }}'); background-size: cover; background-position: center; background-repeat: no-repeat;{% else %}background: linear-gradient(120deg, #f6f8fd 0%, #f1f5f9 100%);{% endif %} background-color: #000000;">
                 <table cellpadding="0" cellspacing="0" border="0" width="100%"
           style="border-collapse: separate; border-radius: 16px; box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.08), 0 10px 20px -5px rgba(0, 0, 0, 0.04); width: 100%;">
           <tbody>
@@ -96,20 +97,20 @@
                                       </td>
                                     </tr>
                                                                         <tr>
-                                      <td style="border-collapse: collapse; padding: 0 0 1px 0;" nowrap="">
+                                      <td class="responsive-nowrap" style="border-collapse: collapse; padding: 0 0 1px 0;" nowrap="">
                                         <span style="font-weight: 400; font-style: normal; color: {{ design.text_secondary }}; font-size: 12px; font-family: {{ design.font_family }};">{{ personal.job_title }}</span>
                                       </td>
                                     </tr>
                                                                         {% if personal.company %}
                                     <tr>
-                                      <td style="border-collapse: collapse; padding: 0 0 6px 0;" nowrap="">
+                                      <td class="responsive-nowrap" style="border-collapse: collapse; padding: 0 0 6px 0;" nowrap="">
                                         <span style="font-weight: 600; font-style: normal; color: {{ design.text_primary }}; font-size: 12px; font-family: {{ design.font_family }};">{{ personal.company }}</span>
                                       </td>
                                     </tr>
                                     {% endif %}
                                                                         {% if personal.email %}
                                     <tr>
-                                      <td style="border-collapse: collapse; padding: 0 0 1px 0;" nowrap="">
+                                      <td class="responsive-nowrap" style="border-collapse: collapse; padding: 0 0 1px 0;" nowrap="">
                                           <a href="mailto:{{ personal.email }}"
                                             style="text-decoration: none; font-weight: 400; font-style: normal; color: {{ design.text_secondary }}; font-size: 12px; font-family: {{ design.font_family }};">
                                             {{ personal.email }}
@@ -119,7 +120,7 @@
                                     {% endif %}
                                                                         {% if contact.website_display %}
                                     <tr>
-                                      <td style="border-collapse: collapse; padding: 0 0 2px 0;" nowrap="">
+                                      <td class="responsive-nowrap" style="border-collapse: collapse; padding: 0 0 2px 0;" nowrap="">
                                           <a href="{{ contact.website }}" target="_blank"
                                             style="text-decoration: none; font-weight: 400; font-style: normal; color: {{ design.accent_color }}; font-size: 12px; font-family: {{ design.font_family }};">
                                             {{ contact.website_display }}

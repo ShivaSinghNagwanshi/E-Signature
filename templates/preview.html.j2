@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>E-Signature | Preview</title>
+    <link type="image/png" sizes="96x96" rel="icon" href="{{ asset_base_url }}/icons8-digital signature-fluent-systems-regular-96.png">
     <meta name="description" content="E-Signature for {{ personal.full_name }}, {{ personal.job_title }} at {{ personal.company }}" />
     <meta name="theme-color" content="{{ design.accent_color }}" />
     <meta property="og:site_name" content="E-Signature" />
@@ -14,7 +15,8 @@
     <meta property="og:url" content="{{ hosting.base_url }}" />
     <meta property="og:image" content="{{ hosting.base_url }}/e-signature-meta.png" />
     <meta property="og:image:width" content="800" />
-    <meta property="og:image:height" content="600" />
+    <meta property="og:image:height" content="418" />
+    <meta property="og:image:type" content="image/png" />
     <meta property="og:image:alt" content="E-Signature Preview for {{ personal.full_name }}" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="{{ personal.full_name }} | {{ personal.job_title }}" />
@@ -120,6 +122,48 @@
             background: rgba(255,255,255,0.15);
             color: white;
         }
+        
+        /* Height-based responsiveness for Sidebar content to fit shorter viewports */
+        @media (max-height: 850px) {
+            .sidebar-item {
+                padding: 4px 10px !important;
+                margin: 1px 8px !important;
+                font-size: 12px !important;
+                gap: 6px !important;
+            }
+            .sidebar-item span.material-symbols-outlined {
+                font-size: 15px !important;
+            }
+            /* Compress heading margins */
+            .px-3.pt-4.pb-1, .px-3.pt-6.pb-1 {
+                padding-top: 8px !important;
+                padding-bottom: 2px !important;
+            }
+            .px-3.pt-2.pb-1 {
+                padding-top: 4px !important;
+                padding-bottom: 2px !important;
+            }
+        }
+        @media (max-height: 720px) {
+            .sidebar-item {
+                padding: 3px 8px !important;
+                margin: 1px 6px !important;
+                font-size: 11px !important;
+                gap: 4px !important;
+            }
+            .sidebar-item span.material-symbols-outlined {
+                font-size: 13px !important;
+            }
+            .px-3.pt-4.pb-1, .px-3.pt-6.pb-1 {
+                padding-top: 4px !important;
+                padding-bottom: 2px !important;
+            }
+            .px-3.pt-2.pb-1 {
+                padding-top: 2px !important;
+                padding-bottom: 2px !important;
+            }
+        }
+
         /* Override MSO specifics for preview rendering */
         .preview-signature table {
             border-collapse: collapse;
@@ -289,7 +333,12 @@
                     <span class="material-symbols-outlined text-[16px] text-[#0a84ff]">send</span>
                     <span>Sent</span>
                 </div>
-                <div class="px-3 pt-6 pb-1 text-[11px] font-semibold text-mac-text-muted">Export & Code</div>
+            </div>
+            
+            <!-- Static Sidebar Footer containing Export & Credits (Stays fixed at the bottom) -->
+            <div class="h-px bg-mac-border mx-3 my-1"></div>
+            <div class="py-2 flex flex-col flex-shrink-0">
+                <div class="px-3 pb-1 text-[11px] font-semibold text-mac-text-muted">Export & Code</div>
                 <div class="sidebar-item cursor-pointer" onclick="copySignatureVisual(this.querySelector('span'))">
                     <span class="material-symbols-outlined text-[16px] text-[#0a84ff]">content_copy</span>
                     <span>Copy Signature Card</span>
@@ -312,12 +361,10 @@
                     <span class="material-symbols-outlined text-[16px] text-[#32ade6]">info</span>
                     <span>Credits</span>
                 </a>
-
-
             </div>
         </div>
-                <div class="w-[320px] bg-mac-list border-r border-mac-border flex flex-col flex-shrink-0 hidden md:flex">
-                        <div class="h-14 px-4 py-2 border-b border-mac-border flex flex-col justify-center">
+        <div class="w-[320px] bg-mac-list border-r border-mac-border flex flex-col flex-shrink-0 hidden md:flex">
+            <div class="h-14 px-4 py-2 border-b border-mac-border flex flex-col justify-center">
                 <div class="flex justify-between items-center">
                     <div class="flex items-center gap-2">
                         <span id="sidebar-toggle" class="material-symbols-outlined text-[18px] text-[#a1a1a6] hover:text-white cursor-pointer hidden lg:block" title="Toggle Sidebar" onclick="toggleSidebar()">dock_to_right</span>
@@ -327,8 +374,8 @@
                 </div>
                 <span class="text-[11px] text-mac-text-muted">49 messages</span>
             </div>
-                        <div class="flex-1 overflow-hidden">
-                                <div class="active-mail-glass text-white px-3 py-2 cursor-default flex gap-2 animate-drop-down-stagger" style="animation-delay: 0.6s;">
+            <div class="flex-1 overflow-hidden">
+                <div class="active-mail-glass text-white px-3 py-2 cursor-default flex gap-2 animate-drop-down-stagger" style="animation-delay: 0.6s;">
                     <div class="w-[7px] pt-1"></div>
                     <div class="flex-1 min-w-0">
                         <div class="flex justify-between items-baseline mb-0.5">
@@ -341,17 +388,13 @@
                         </div>
                     </div>
                 </div>
-                                                <div id="skeleton-container"></div>
+                <div id="skeleton-container"></div>
                 <script>
                     function fillSkeletons() {
                         const container = document.getElementById("skeleton-container");
                         const scrollContainer = container.parentElement;
-                        // Calculate exact available height: container height minus active email height
                         const activeEmailHeight = scrollContainer.children[0].offsetHeight;
                         const availableHeight = scrollContainer.clientHeight - activeEmailHeight;
-                        // Calculate exact number of items using Math.floor, then add 1 extra skeleton 
-                        // so it perfectly clips off the bottom of the screen (illusion of infinite list).
-                        // Assuming each skeleton item is roughly 85px tall
                         const numItems = Math.max(0, Math.floor(availableHeight / 85)) + 1;
                         let html = "";
                         for(let i = 0; i < numItems; i++) {
@@ -370,14 +413,13 @@
                         }
                         container.innerHTML = html;
                     }
-                    // Generate exact amount on load and re-calculate if window is resized
                     document.addEventListener("DOMContentLoaded", fillSkeletons);
                     window.addEventListener("resize", fillSkeletons);
                 </script>
             </div>
         </div>
-                <div class="flex-1 bg-mac-body flex flex-col min-w-0">
-                        <div class="h-14 border-b border-mac-border flex justify-between items-center px-4 bg-mac-toolbar">
+        <div class="flex-1 bg-mac-body flex flex-col min-w-0">
+            <div class="h-14 border-b border-mac-border flex justify-between items-center px-4 bg-mac-toolbar">
                 <div id="header-icons-left" class="flex items-center gap-3 sm:gap-6">
                     <span class="material-symbols-outlined text-[18px] text-[#a1a1a6] hover:text-white cursor-pointer">mail</span>
                     <span class="material-symbols-outlined text-[18px] text-[#a1a1a6] hover:text-white cursor-pointer">delete</span>
@@ -406,9 +448,9 @@
                     </div>
                 </div>
             </div>
-                        <div class="flex-1 overflow-y-auto px-6 py-6 text-[13px]">
-                                <div class="flex gap-4">
-                                        <div class="w-12 h-12 rounded-full flex-shrink-0 flex items-center justify-center overflow-hidden border border-[#333]">
+            <div class="flex-grow overflow-y-auto overflow-x-hidden px-4 py-4 sm:px-6 sm:py-6 text-[13px]">
+                <div class="flex gap-4">
+                    <div class="w-12 h-12 rounded-full flex-shrink-0 flex items-center justify-center overflow-hidden border border-[#333]">
                         <img src="{{ asset_base_url }}/{{ profile_png_filename }}" alt="Profile" class="w-full h-full object-cover">
                     </div>
                     <div class="flex-1 min-w-0">
@@ -436,7 +478,6 @@
         </div>
     </div>
     <script>
-        // Clipboard Actions
         function toggleSidebar() {
             const macWindow = document.querySelector('.mac-window');
             const toggleBtn = document.getElementById('sidebar-toggle');
@@ -444,23 +485,19 @@
             const sidebarChildren = document.querySelectorAll('#column-1 .overflow-y-auto > div, #column-1 .overflow-y-auto > a');
             
             if (macWindow.classList.contains('sidebar-hidden')) {
-                // OPEN SIDEBAR
                 macWindow.classList.remove('sidebar-hidden');
                 toggleBtn.classList.remove('flip-active');
                 
-                // Animate header actions out first
                 const toolbarChildren = toolbarActions.children;
                 Array.from(toolbarChildren).forEach((child, index) => {
                     child.style.animation = 'none';
                     child.offsetHeight;
                     child.style.animation = null;
-                    // Reverse sequence stagger for pop out
                     child.style.animationDelay = `${(3 - index) * 0.05}s`;
                     child.classList.remove('animate-pop-in');
                     child.classList.add('animate-pop-out');
                 });
                 
-                // Hide header actions container after animations finish
                 setTimeout(() => {
                     toolbarActions.classList.add('lg:hidden');
                     Array.from(toolbarChildren).forEach(child => {
@@ -477,7 +514,6 @@
                     child.classList.add('animate-drop-down-stagger');
                 });
             } else {
-                // CLOSE SIDEBAR (with reverse waterfall)
                 toggleBtn.classList.add('flip-active');
                 
                 sidebarChildren.forEach((child, index) => {
@@ -492,7 +528,6 @@
                 setTimeout(() => {
                     macWindow.classList.add('sidebar-hidden');
                     toolbarActions.classList.remove('lg:hidden');
-                    // Trigger pop-in for header actions
                     const toolbarChildren = toolbarActions.children;
                     Array.from(toolbarChildren).forEach((child, index) => {
                         child.style.animation = 'none';
@@ -502,16 +537,14 @@
                         child.classList.remove('animate-pop-out');
                         child.classList.add('animate-pop-in');
                     });
-                }, 300); // Start hiding sidebar slightly after items start fading out
+                }, 300);
             }
         }
 
         async function copySignatureVisual(btn) {
-            // Get raw HTML
             const sigHTML = document.querySelector('.preview-signature').innerHTML;
             const originalIcon = btn.innerText;
             try {
-                // Try modern Clipboard API for rich HTML
                 const blobHtml = new Blob([sigHTML], { type: 'text/html' });
                 const blobText = new Blob([sigHTML], { type: 'text/plain' });
                 const data = [new window.ClipboardItem({ 'text/html': blobHtml, 'text/plain': blobText })];
@@ -520,7 +553,6 @@
                 btn.innerText = 'check';
                 setTimeout(() => { btn.innerText = originalIcon; }, 2000);
             } catch (err) {
-                // Fallback for older browsers
                 const container = document.createElement('div');
                 container.innerHTML = sigHTML;
                 document.body.appendChild(container);
@@ -549,42 +581,35 @@
             }
         }
 
-        // DOMContentLoaded for Animations
         document.addEventListener('DOMContentLoaded', () => {
-            // Trigger Sidebar Physical Open on Load
             setTimeout(() => {
                 document.querySelector('.mac-window').classList.remove('sidebar-hidden');
             }, 100);
 
-            // Animate Sidebar Items
             const sidebarChildren = document.querySelectorAll('#column-1 .overflow-y-auto > div, #column-1 .overflow-y-auto > a');
             sidebarChildren.forEach((child, index) => {
                 child.classList.add('animate-drop-down-stagger');
                 child.style.animationDelay = `${0.5 + (index * 0.04)}s`;
             });
 
-            // Animate Header Icons
             const headerIcons = document.querySelectorAll('#header-icons-left > span');
             headerIcons.forEach((icon, index) => {
                 icon.classList.add('animate-drop-down-stagger');
                 icon.style.animationDelay = `${0.5 + (index * 0.08)}s`;
             });
 
-            // Animate Middle Header (All Sent & 49 messages)
             const middleHeaderItems = document.querySelectorAll('.w-\\[320px\\] > .h-14 > div, .w-\\[320px\\] > .h-14 > span');
             middleHeaderItems.forEach((child, index) => {
                 child.classList.add('animate-drop-down-stagger');
                 child.style.animationDelay = `${0.5 + (index * 0.1)}s`;
             });
 
-            // Animate Right Header (Profile Info)
             const rightHeaderItems = document.querySelectorAll('.overflow-y-auto .flex.gap-4 > div');
             rightHeaderItems.forEach((child, index) => {
                 child.classList.add('animate-drop-down-stagger');
                 child.style.animationDelay = `${0.7 + (index * 0.1)}s`;
             });
 
-            // Typewriter Effect
             const paragraphs = document.querySelectorAll('.email-body-p');
             paragraphs.forEach(p => {
                 p.setAttribute('data-text', p.innerHTML);
@@ -602,20 +627,18 @@
                     if (charIndex < text.length) {
                         p.innerHTML += text.charAt(charIndex);
                         charIndex++;
-                        setTimeout(typeWriter, 5); // Fast speed
+                        setTimeout(typeWriter, 5);
                     } else {
                         currentP++;
                         charIndex = 0;
                         setTimeout(typeWriter, 5);
                     }
                 } else {
-                    // Start signature animation when typewriter completes
                     document.getElementById('signature-container').classList.add('animate-slide-up-fade');
                 }
             }
-            setTimeout(typeWriter, 1200); // Wait 1.2s for UI to load before typing
+            setTimeout(typeWriter, 1200);
         });
-
     </script>
 </body>
 </html>

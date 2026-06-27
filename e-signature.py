@@ -191,24 +191,26 @@ def generate_png_screenshot(html_path: Path, output_png: Path, meta_png: Path):
             browser = p.chromium.launch(headless=True)
             uri = f"file:///{html_path.absolute().as_posix()}"
             
-            # Generate high-res (3x) for the main download
             context_high = browser.new_context(device_scale_factor=3)
             page_high = context_high.new_page()
             page_high.set_viewport_size({"width": 800, "height": 600})
             page_high.goto(uri)
             page_high.wait_for_load_state("networkidle")
+            page_high.wait_for_timeout(5000)
             page_high.locator("table").first.screenshot(path=output_png, omit_background=True)
             print(f"  ✅ Generated high-res PNG (3x): {output_png.name} ({output_png.stat().st_size / 1024:.1f} KB)")
             context_high.close()
 
-            # WhatsApp metadata limit is ~300KB. Try 2x, then 1x resolution for meta.
             for scale in [2, 1]:
                 context_meta = browser.new_context(device_scale_factor=scale)
                 page_meta = context_meta.new_page()
-                page_meta.set_viewport_size({"width": 800, "height": 600})
+                page_meta.set_viewport_size({"width": 800, "height": 418})
                 page_meta.goto(uri)
                 page_meta.wait_for_load_state("networkidle")
-                page_meta.locator("table").first.screenshot(path=meta_png, omit_background=True)
+                page_meta.wait_for_timeout(5000)
+                
+                page_meta.evaluate("document.body.style.display = 'flex'; document.body.style.justifyContent = 'center'; document.body.style.alignItems = 'center'; document.body.style.height = '100vh';")
+                page_meta.screenshot(path=meta_png, omit_background=True)
                 context_meta.close()
                 
                 size_kb = meta_png.stat().st_size / 1024
@@ -274,6 +276,7 @@ def main():
     png_path = PROJECT_ROOT / "e-signature.png"
     meta_path = PROJECT_ROOT / "e-signature-meta.png"
     generate_png_screenshot(output_path, png_path, meta_path)
+
     if args.preview:
         preview_html = generate_preview(config, html, use_local=args.local, force_png=args.png)
         if preview_html:
