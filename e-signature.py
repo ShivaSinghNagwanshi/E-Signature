@@ -168,11 +168,11 @@ def generate_preview(config: dict, signature_html: str, use_local: bool = False,
         loader=FileSystemLoader(str(TEMPLATES_DIR)),
         autoescape=False,
     )
-    template_path = TEMPLATES_DIR / "preview.html.j2"
+    template_path = TEMPLATES_DIR / "index.html.j2"
     if not template_path.exists():
         return ""
         
-    template = env.get_template("preview.html.j2")
+    template = env.get_template("index.html.j2")
     context = build_template_context(config, use_local=use_local, force_png=force_png)
     context["signature_html"] = signature_html
     return template.render(**context)
@@ -273,19 +273,19 @@ def main():
     file_size = output_path.stat().st_size
     print(f"  ✅ Generated: {output_path}")
     print(f"  📦 Size: {file_size} bytes ({file_size / 1024:.1f} KB)")
-    png_path = PROJECT_ROOT / "e-signature.png"
-    meta_path = PROJECT_ROOT / "e-signature-meta.png"
-    generate_png_screenshot(output_path, png_path, meta_path)
+    preview_html = generate_preview(config, html, use_local=args.local, force_png=args.png)
+    if preview_html:
+        preview_path = PROJECT_ROOT / "index.html"
+        with open(preview_path, "w", encoding="utf-8") as f:
+            f.write(preview_html)
+        print(f"  ✅ Generated Preview: {preview_path}")
+    else:
+        print("  ⚠  Could not generate preview: templates/index.html.j2 missing.")
 
     if args.preview:
-        preview_html = generate_preview(config, html, use_local=args.local, force_png=args.png)
-        if preview_html:
-            preview_path = PROJECT_ROOT / "index.html"
-            with open(preview_path, "w", encoding="utf-8") as f:
-                f.write(preview_html)
-            print(f"  ✅ Generated Preview: {preview_path}")
-        else:
-            print("  ⚠  Could not generate preview: templates/preview.html.j2 missing.")
+        png_path = PROJECT_ROOT / "e-signature.png"
+        meta_path = PROJECT_ROOT / "e-signature-meta.png"
+        generate_png_screenshot(output_path, png_path, meta_path)
     if args.copy:
         try:
             import pyperclip

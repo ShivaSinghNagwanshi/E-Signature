@@ -128,7 +128,7 @@ If you strictly want to bypass the clipboard and inject the raw code into Gmail:
 │   ├── signature-profile.png
 │   └── signature-logo.png
 ├── templates/              # Jinja2 template files
-│   ├── preview.html.j2     # The Apple Mail preview layout
+│   ├── index.html.j2       # The interactive preview layout
 │   └── signature.html.j2   # The core email signature layout
 ├── config.json             # Configuration variables
 ├── e-signature.py          # The primary Python build engine
@@ -143,16 +143,16 @@ If you strictly want to bypass the clipboard and inject the raw code into Gmail:
 3. The script dynamically scans the `assets/` directory to resolve which social media icons exist and prefer animated variants if available.
 4. The data is passed into the Jinja2 engine.
 5. The engine compiles `templates/signature.html.j2` into standard `<table>` HTML.
-6. The engine compiles `templates/preview.html.j2`, injecting the signature HTML inside of it.
+6. The engine compiles `templates/index.html.j2`, injecting the signature HTML inside of it.
 7. The finalized static assets (`e-signature.html` and `index.html`) are written directly to the project root.
 
 ## Available Scripts
 
 | Command                                   | Description                                                           |
 | ----------------------------------------- | --------------------------------------------------------------------- |
-| `python e-signature.py`                   | Generate files using absolute URLs (for production deployment).       |
-| `python e-signature.py --local`           | Generate the signature using relative local paths.                    |
-| `python e-signature.py --preview`         | Generate both the signature and the `index.html` preview UI.          |
+| `python e-signature.py`                   | Generate output files (e-signature.html and index.html) using absolute hosted URLs. |
+| `python e-signature.py --local`           | Generate output files using relative local paths.                    |
+| `python e-signature.py --preview`         | Generate e-signature.png and e-signature-meta.png screenshots (requires Playwright). |
 | `python e-signature.py --png`             | Force the use of static PNG icons instead of animated GIFs.           |
 | `python e-signature.py --config-path <p>` | Specify a custom path to a configuration JSON file.                   |
 | `python e-signature.py --copy`            | Generate the signature and automatically copy the HTML to the clipboard. |
@@ -221,7 +221,7 @@ GitHub Pages is a quick way to host the signature directly from the repository.
 
 ### Missing Assets in Preview
 **Error:** The preview UI shows broken image links locally.
-**Solution:** Ensure you generated the files using the `--local` flag (`python e-signature.py --local --preview`). If you omit the flag, the HTML expects the assets to be hosted on your production domain.
+**Solution:** Ensure you generated the files using the `--local` flag (`python e-signature.py --local`). If you omit the flag, the HTML expects the assets to be hosted on your production domain.
 ## License and Credits
 
 This project is open-source and available under the [MIT License](LICENSE). Feel free to fork, customize, and use it for your own personal or commercial projects.
