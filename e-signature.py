@@ -209,8 +209,7 @@ def generate_png_screenshot(html_path: Path, output_png: Path, meta_png: Path):
                 page_meta.wait_for_load_state("networkidle")
                 page_meta.wait_for_timeout(5000)
                 
-                page_meta.evaluate("document.body.style.display = 'flex'; document.body.style.justifyContent = 'center'; document.body.style.alignItems = 'center'; document.body.style.height = '100vh';")
-                page_meta.screenshot(path=meta_png, omit_background=True)
+                page_meta.locator("table").first.screenshot(path=meta_png, omit_background=True)
                 context_meta.close()
                 
                 size_kb = meta_png.stat().st_size / 1024
