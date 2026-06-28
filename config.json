@@ -1,21 +1,22 @@
 {
     "personal": {
-        "full_name": "John Doe",
-        "job_title": "Senior Software Engineer",
-        "company": "Tech Innovations Inc.",
-        "email": "john.doe@example.com",
-        "pronouns": "he/him"
+        "full_name": "[Your Name]",
+        "job_title": "[Your Title]",
+        "company": "[Your Company]",
+        "email": "you@example.com",
+        "pronouns": "",
+        "about": "[A brief description about you, your work, or your mission]"
     },
     "contact": {
-        "website": "https://example.com",
-        "website_display": "example.com"
+        "website": "https://yourwebsite.com",
+        "website_display": "yourwebsite.com"
     },
     "social_links": {
-        "website": "https://example.com",
-        "linkedin": "https://www.linkedin.com/in/johndoe/",
-        "github": "https://github.com/johndoe",
-        "instagram": "https://www.instagram.com/johndoe",
-        "x": "https://x.com/johndoe"
+        "website": "https://yourwebsite.com",
+        "linkedin": "https://linkedin.com/in/yourprofile",
+        "github": "https://github.com/yourprofile",
+        "instagram": "https://instagram.com/yourprofile",
+        "x": "https://x.com/yourprofile"
     },
     "social_order": [
         "website",
@@ -25,22 +26,19 @@
         "instagram"
     ],
     "assets": {
-        "base_url_local": "./assets",
-        "base_url_hosted": "https://example.com/assets",
         "profile_photo": "signature-profile",
-        "logo": "signature-logo",
-        "note": "Generator auto-detects .gif vs .png in the assets folder. If signature-profile.gif exists, it uses that; otherwise falls back to .png."
+        "logo": "signature-logo"
     },
-    "active_theme": "vision-os",
+    "active_design": "split",
+    "designs": {
+        "classic": "signature-classic.html.j2",
+        "portrait": "signature-portrait.html.j2",
+        "split": "signature-split.html.j2",
+        "compact": "signature-compact.html.j2"
+    },
+    "active_theme": "glassmorphism",
     "themes": {
         "glassmorphism": {
-            "accent_color": "#6366f1",
-            "accent_gradient": "linear-gradient(135deg, #6366f1, #8b5cf6)",
-            "text_primary": "#1a1a2e",
-            "text_secondary": "#64748b",
-            "text_muted": "#94a3b8"
-        },
-        "vision-os": {
             "accent_color": "#a5b4fc",
             "accent_gradient": "linear-gradient(135deg, #818cf8, #c084fc)",
             "text_primary": "#ffffff",
@@ -64,11 +62,18 @@
     "cta": {
         "enabled": true,
         "text": "Visit Portfolio",
-        "url": "https://example.com",
+        "url": "https://shivasinghnagwanshi.indevs.in",
         "style": "pill"
+    },
+    "cta_secondary": {
+        "enabled": true,
+        "text": "Email Me",
+        "url": "mailto:shivasinghnagwanshi@gmail.com",
+        "style": "outline"
     },
     "hosting": {
         "repo_name": "E-Signature",
-        "base_url": "https://example.com/e-signature"
+        "base_url": "https://e-signature.shivasinghnagwanshi.indevs.in",
+        "hosting_platform": "dynamic"
     }
 }

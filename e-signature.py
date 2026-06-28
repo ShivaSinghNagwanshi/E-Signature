@@ -57,7 +57,7 @@ def resolve_asset_path(name: str, fallback_subdir: str = "", force_png: bool = F
         
     if (fallback_dir / f"{name}.png").exists():
         return f"{fallback_subdir}/{name}.png" if fallback_subdir else f"{name}.png"
-    # Fallback to PNG name even if missing so templates don't break entirely
+
     return f"{fallback_subdir}/{name}.png" if fallback_subdir else f"{name}.png"
 
 def build_template_context(config: dict, use_local: bool = False, force_png: bool = False) -> dict:
@@ -66,24 +66,45 @@ def build_template_context(config: dict, use_local: bool = False, force_png: boo
     Handles asset resolution, URL building, and conditional features.
     """
     if use_local:
-        asset_base_url = "assets"
+        asset_base_url = "../../assets"
     else:
         hosting = config.get("hosting", {})
         base_url = hosting.get("base_url", "")
         asset_base_url = f"{base_url}/assets" if base_url else "./assets"
+    def apply_light_theme(asset_path: str) -> str:
+        if not asset_path: return asset_path
+        if asset_path.endswith('.png'):
+            light_path = asset_path.replace('.png', '-light.png')
+        elif asset_path.endswith('.gif'):
+            light_path = asset_path.replace('.gif', '-light.gif')
+        else:
+            return asset_path
+        if (ASSETS_DIR / light_path).exists():
+            return light_path
+        return asset_path
+
     profile_name = config.get("assets", {}).get("profile_photo", "signature-profile")
     profile_filename = resolve_asset_path(profile_name, force_png=force_png)
+    profile_filename_light = apply_light_theme(profile_filename)
     profile_png_filename = resolve_asset_path(profile_name, force_png=True)
     profile_is_gif = profile_filename.endswith(".gif")
+    
     logo_name = config.get("assets", {}).get("logo", "signature-logo")
     logo_filename = resolve_asset_path(logo_name, force_png=force_png)
+    logo_filename_light = apply_light_theme(logo_filename)
+    
     social_order = config.get("social_order", SOCIAL_ICON_ORDER_DEFAULT)
     icon_paths = {}
+    icon_paths_light = {}
     for icon_name in social_order:
-        icon_paths[icon_name] = resolve_asset_path(icon_name, fallback_subdir="icons", force_png=force_png)
-    verified_exists = (ICONS_DIR / "verified.png").exists() or (ASSETS_DIR / "animated" / "verified.gif").exists()
+        base_path = resolve_asset_path(icon_name, fallback_subdir="icons", force_png=force_png)
+        icon_paths[icon_name] = base_path
+        icon_paths_light[icon_name] = apply_light_theme(base_path)
+        
+    verified_exists = (ICONS_DIR / "verified-light.png").exists() or (ASSETS_DIR / "animated" / "verified-light.gif").exists() or (ICONS_DIR / "verified.png").exists() or (ASSETS_DIR / "animated" / "verified.gif").exists()
     if verified_exists:
         icon_paths["verified"] = resolve_asset_path("verified", fallback_subdir="icons")
+        icon_paths_light["verified"] = apply_light_theme(icon_paths["verified"])
     background_filename = None
     for ext in ["jpg", "jpeg", "png", "gif", "webp"]:
         if (ASSETS_DIR / f"background.{ext}").exists():
@@ -104,6 +125,7 @@ def build_template_context(config: dict, use_local: bool = False, force_png: boo
         "icon_color": "#64748b",
     }
     active_theme = config.get("active_theme", "glassmorphism")
+    active_design = config.get("active_design", "classic")
     theme_config = config.get("themes", {}).get(active_theme, {})
     design = {**design_defaults, **config.get("design", {}), **theme_config}
     design["style"] = active_theme
@@ -126,6 +148,7 @@ def build_template_context(config: dict, use_local: bool = False, force_png: boo
         contact["website_display"] = display
     cta_defaults = {"enabled": False, "text": "", "url": "", "style": "pill"}
     cta = {**cta_defaults, **config.get("cta", {})}
+    cta_secondary = {**cta_defaults, **config.get("cta_secondary", {})}
     assets = config.get("assets", {})
 
     return {
@@ -133,30 +156,49 @@ def build_template_context(config: dict, use_local: bool = False, force_png: boo
         "contact": contact,
         "social_links": social_links,
         "social_order": social_order,
+        "logo_filename": logo_filename,
+        "logo_filename_light": logo_filename_light,
+        "background_filename": background_filename,
+        "icon_paths": icon_paths,
+        "icon_paths_light": icon_paths_light,
         "design": design,
         "cta": cta,
+        "cta_secondary": cta_secondary,
         "assets": assets,
         "hosting": config.get("hosting", {}),
         "asset_base_url": asset_base_url,
         "profile_filename": profile_filename,
+        "profile_filename_light": profile_filename_light,
         "profile_png_filename": profile_png_filename,
         "profile_is_gif": profile_is_gif,
         "logo_filename": logo_filename,
         "icon_paths": icon_paths,
         "verified_icon_exists": verified_exists,
         "background_filename": background_filename,
+        "active_theme": active_theme,
+        "active_design": active_design,
     }
 
 def generate_signature(config: dict, use_local: bool = False, force_png: bool = False) -> str:
     """Generate the email signature HTML from config and template."""
     env = Environment(
         loader=FileSystemLoader(str(TEMPLATES_DIR)),
-        autoescape=False,  # We're generating HTML, not escaping it
+        autoescape=False,
         trim_blocks=True,
         lstrip_blocks=True,
     )
 
-    template = env.get_template("signature.html.j2")
+    active_design = config.get("active_design", "classic")
+    default_designs = {
+        "classic": "signature-classic.html.j2",
+        "portrait": "signature-portrait.html.j2",
+        "split": "signature-split.html.j2",
+        "compact": "signature-compact.html.j2"
+    }
+    designs_map = config.get("designs", default_designs)
+    design_file = designs_map.get(active_design, default_designs.get(active_design, "signature-classic.html.j2"))
+    
+    template = env.get_template(design_file)
     context = build_template_context(config, use_local=use_local, force_png=force_png)
     html = template.render(**context)
 
@@ -191,7 +233,7 @@ def generate_png_screenshot(html_path: Path, output_png: Path, meta_png: Path):
             browser = p.chromium.launch(headless=True)
             uri = f"file:///{html_path.absolute().as_posix()}"
             
-            context_high = browser.new_context(device_scale_factor=3)
+            context_high = browser.new_context(device_scale_factor=3, color_scheme="dark")
             page_high = context_high.new_page()
             page_high.set_viewport_size({"width": 800, "height": 600})
             page_high.goto(uri)
@@ -202,7 +244,7 @@ def generate_png_screenshot(html_path: Path, output_png: Path, meta_png: Path):
             context_high.close()
 
             for scale in [2, 1]:
-                context_meta = browser.new_context(device_scale_factor=scale)
+                context_meta = browser.new_context(device_scale_factor=scale, color_scheme="dark")
                 page_meta = context_meta.new_page()
                 page_meta.set_viewport_size({"width": 800, "height": 418})
                 page_meta.goto(uri)
@@ -225,6 +267,8 @@ def generate_png_screenshot(html_path: Path, output_png: Path, meta_png: Path):
 
 def main():
     parser = argparse.ArgumentParser(description="Generate email signature HTML")
+    parser.add_argument("--all", action="store_true",
+                        help="Generate all designs")
     parser.add_argument("--local", action="store_true",
                         help="Use local file paths instead of hosted URLs")
     parser.add_argument("--copy", action="store_true",
@@ -237,6 +281,10 @@ def main():
                         help="Custom output file path")
     parser.add_argument("--config-path", type=str, default=None,
                         help="Path to a custom config.json file")
+    parser.add_argument("--design", type=str, default=None,
+                        help="Override the active design from config")
+    parser.add_argument("--theme", type=str, default=None,
+                        help="Override the active theme from config")
     args = parser.parse_args()
 
     print("=" * 60)
@@ -244,6 +292,10 @@ def main():
     print("=" * 60)
     custom_config_path = Path(args.config_path) if args.config_path else CONFIG_PATH
     config = load_config(custom_config_path)
+    if args.design:
+        config["active_design"] = args.design
+    if args.theme:
+        config["active_theme"] = args.theme
     name = config.get("personal", {}).get("full_name") or config.get("full_name", "Unknown")
     print(f"  Name: {name}")
     print(f"  Mode: {'Local preview' if args.local else 'Hosted URLs'}")
@@ -262,30 +314,56 @@ def main():
         status = "✅" if exists else "⚠️ "
         print(f"    {status} {path}")
     print()
-    html = generate_signature(config, use_local=args.local, force_png=args.png)
-    output_path = Path(args.output) if args.output else PROJECT_ROOT / "e-signature.html"
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-
-    with open(output_path, "w", encoding="utf-8") as f:
-        f.write(html)
-
-    file_size = output_path.stat().st_size
-    print(f"  ✅ Generated: {output_path}")
-    print(f"  📦 Size: {file_size} bytes ({file_size / 1024:.1f} KB)")
-    preview_html = generate_preview(config, html, use_local=args.local, force_png=args.png)
-    if preview_html:
-        preview_path = PROJECT_ROOT / "index.html"
-        with open(preview_path, "w", encoding="utf-8") as f:
-            f.write(preview_html)
-        print(f"  ✅ Generated Preview: {preview_path}")
+    original_active_design = config.get("active_design", "classic")
+    
+    designs_to_generate = []
+    if args.all:
+        default_designs = {
+            "classic": "signature-classic.html.j2",
+            "centered": "signature-centered.html.j2",
+            "portrait": "signature-portrait.html.j2",
+            "split": "signature-split.html.j2",
+            "compact": "signature-compact.html.j2"
+        }
+        designs_to_generate = list(config.get("designs", default_designs).keys())
     else:
-        print("  ⚠  Could not generate preview: templates/index.html.j2 missing.")
+        designs_to_generate = [config.get("active_design", "classic")]
 
-    if args.preview:
-        png_path = PROJECT_ROOT / "e-signature.png"
-        meta_path = PROJECT_ROOT / "e-signature-meta.png"
-        generate_png_screenshot(output_path, png_path, meta_path)
-    if args.copy:
+    for current_design in designs_to_generate:
+        print(f"\n--- Generating Design: {current_design} ---")
+        config["active_design"] = current_design
+        
+        html = generate_signature(config, use_local=args.local, force_png=args.png)
+
+        output_dir = PROJECT_ROOT / "designs" / current_design
+        output_dir.mkdir(parents=True, exist_ok=True)
+        output_name = "e-signature.html"
+        png_name = "e-signature.png"
+        meta_name = "e-signature-meta.png"
+
+        output_path = output_dir / output_name
+        with open(output_path, "w", encoding="utf-8") as f:
+            f.write(html)
+
+        file_size = output_path.stat().st_size
+        print(f"  ✅ Generated HTML: {output_path}")
+        print(f"  📦 Size: {file_size} bytes ({file_size / 1024:.1f} KB)")
+        
+        preview_html = generate_preview(config, html, use_local=args.local, force_png=args.png)
+        if preview_html:
+            preview_path = output_dir / "index.html"
+            with open(preview_path, "w", encoding="utf-8") as f:
+                f.write(preview_html)
+            print(f"  ✅ Generated Preview: {preview_path}")
+        else:
+            print("  ⚠  Could not generate preview: templates/index.html.j2 missing.")
+
+        if args.preview:
+            png_path = output_dir / png_name
+            meta_path = output_dir / meta_name
+            generate_png_screenshot(output_path, png_path, meta_path)
+
+    if args.copy and len(designs_to_generate) == 1:
         try:
             import pyperclip
             pyperclip.copy(html)

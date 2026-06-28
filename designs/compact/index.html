@@ -474,118 +474,153 @@
                         <div class="preview-signature" id="signature-container" style="width: 600px; flex-shrink: 0; transform-origin: top left;">
                             <style type="text/css">
   @media screen and (max-width: 480px) {
-    .stack-column { display: block !important; width: 100% !important; max-width: 100% !important; direction: ltr !important; }
-    .stack-img { width: 100% !important; height: auto !important; max-width: 240px !important; }
-    .desktop-overlap { margin-left: 0 !important; margin-top: -30px !important; }
+    .responsive-card { padding: 20px !important; }
+    .responsive-name { font-size: 20px !important; }
+    .responsive-title { font-size: 13px !important; }
+    .btn-stack { display: block !important; width: 100% !important; margin-bottom: 12px !important; }
+    .btn-stack-last { display: block !important; width: 100% !important; margin-bottom: 0 !important; }
+    .responsive-profile { width: 100% !important; max-width: 64px !important; height: auto !important; }
     .responsive-icon { width: 100% !important; max-width: 20px !important; height: auto !important; }
   }
   @media (prefers-color-scheme: light) {
     .light-invert { filter: invert(1) brightness(0) !important; }
   }
 </style>
-<table cellpadding="0" cellspacing="0" border="0" width="100%" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; margin: 0 auto; max-width: 600px; border-collapse: collapse;">
+<table cellpadding="0" cellspacing="0" border="0" width="100%" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; margin: 0 auto; max-width: 550px; border-collapse: collapse;">
   <tr>
     <td align="center" style="padding: 24px;">
       
-      <!-- Container Table -->
-      <table cellpadding="0" cellspacing="0" border="0" width="100%" style="max-width: 600px; border-collapse: collapse;">
+      <!-- Card with neon glow box-shadow and fused background -->
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="
+        border-radius: 24px;
+        box-shadow: 0 0 40px rgba(163, 230, 53, 0.15), inset 0 1px 1px rgba(255,255,255,0.1);
+        border: 1px solid rgba(163, 230, 53, 0.2);
+        border-collapse: collapse;
+      ">
         <tr>
-          <!-- Left Column: Image -->
-          <td class="stack-column" width="240" valign="middle" align="center" style="width: 240px; text-align: center; padding: 0;">
-            <div style="position: relative; z-index: 1;">
-              <img class="stack-img" src="https://e-signature.shivasinghnagwanshi.indevs.in/assets/animated/signature-profile.gif" alt="Shiva Singh Nagwanshi" width="240" style="display: block; border: 0; outline: none; object-fit: cover; max-width: 100%;">
-            </div>
-          </td>
-
-          <!-- Right Column: Text Card Overlapping -->
-          <td class="stack-column stack-card" width="360" valign="middle" align="left" style="width: 360px; padding: 0;">
+          <td background="https://e-signature.shivasinghnagwanshi.indevs.in/assets/background.jpg" style="
+            border-radius: 24px;
+background-image: url('https://e-signature.shivasinghnagwanshi.indevs.in/assets/background.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat;          ">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;">
+              <tr>
+                <td class="responsive-card" style="padding: 32px; background-color: rgba(11, 11, 12, 0.4); border-radius: 24px;">
             
-              <table class="desktop-overlap" cellpadding="0" cellspacing="0" border="0" width="100%" style="
-                margin-left: -40px; 
-                position: relative; 
-                z-index: 2;
-                border-radius: 24px;
-                overflow: hidden;
-                box-shadow: -10px 0 30px rgba(0,0,0,0.2);
-                border-collapse: collapse;
-              ">
-                <tr>
-                  <td background="https://e-signature.shivasinghnagwanshi.indevs.in/assets/background.jpg" style="
-background-image: url('https://e-signature.shivasinghnagwanshi.indevs.in/assets/background.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat;                  ">
-                    
-                    <table cellpadding="0" cellspacing="0" border="0" width="100%" style="border-collapse: collapse;">
-                      <tr>
-                        <td style="
-                          padding: 32px 24px;
-                          background-color: rgba(30, 30, 46, 0.4);
-                          backdrop-filter: blur(10px);
-                          -webkit-backdrop-filter: blur(10px);
-                        ">
-                          
-                          <table cellpadding="0" cellspacing="0" border="0" width="100%" style="border-collapse: collapse;">
-                            <tr>
-                              <td style="font-size: 22px; font-weight: 700; color: #ffffff; padding-bottom: 8px; line-height: 28px;">
-                                Shiva Singh Nagwanshi
-                              </td>
-                            </tr>
-                            <tr>
-                              <td style="font-size: 13px; font-weight: 500; color: #a5b4fc; padding-bottom: 20px;">
-                                Student of B.E. C.S.E. at Chitkara University                              </td>
-                            </tr>
-                            <tr>
-                              <td style="font-size: 14px; color: #cbd5e1; line-height: 1.6; padding-bottom: 24px;">
-                                Building scalable solutions and modern digital experiences. Connect with me across the web.
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <!-- Social Icons -->
-                                <table cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;">
-                                  <tr>
-                                    <td style="padding-right: 12px;">
-                                      <a href="https://shivasinghnagwanshi.indevs.in" target="_blank" style="text-decoration: none;">
-                                        <img class="light-invert responsive-icon" src="https://e-signature.shivasinghnagwanshi.indevs.in/assets/icons/website-light.png" width="20" height="20" alt="website" style="display: block; border: 0;">
-                                      </a>
-                                    </td>
-                                    <td style="padding-right: 12px;">
-                                      <a href="https://www.linkedin.com/in/shivasinghnagwanshi/" target="_blank" style="text-decoration: none;">
-                                        <img class="light-invert responsive-icon" src="https://e-signature.shivasinghnagwanshi.indevs.in/assets/animated/linkedin-light.gif" width="20" height="20" alt="linkedin" style="display: block; border: 0;">
-                                      </a>
-                                    </td>
-                                    <td style="padding-right: 12px;">
-                                      <a href="https://github.com/shivasinghnagwanshi" target="_blank" style="text-decoration: none;">
-                                        <img class="light-invert responsive-icon" src="https://e-signature.shivasinghnagwanshi.indevs.in/assets/animated/github-light.gif" width="20" height="20" alt="github" style="display: block; border: 0;">
-                                      </a>
-                                    </td>
-                                    <td style="padding-right: 12px;">
-                                      <a href="https://x.com/xShivaSingh" target="_blank" style="text-decoration: none;">
-                                        <img class="light-invert responsive-icon" src="https://e-signature.shivasinghnagwanshi.indevs.in/assets/animated/x-light.gif" width="20" height="20" alt="x" style="display: block; border: 0;">
-                                      </a>
-                                    </td>
-                                    <td style="padding-right: 12px;">
-                                      <a href="https://www.instagram.com/ShivaSinghNagwanshi" target="_blank" style="text-decoration: none;">
-                                        <img class="light-invert responsive-icon" src="https://e-signature.shivasinghnagwanshi.indevs.in/assets/icons/instagram-light.png" width="20" height="20" alt="instagram" style="display: block; border: 0;">
-                                      </a>
-                                    </td>
-                                  </tr>
-                                </table>
-                              </td>
-                            </tr>
-                          </table>
+            <!-- Main Info -->
+            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;">
+              <tr>
+                <td width="70" valign="middle" style="width: 70px; padding-right: 16px;">
+                  <img class="responsive-profile" src="https://e-signature.shivasinghnagwanshi.indevs.in/assets/animated/signature-profile.gif" width="64" height="64" alt="Shiva Singh Nagwanshi" style="
+                    border-radius: 50%;
+                    display: block;
+                    object-fit: cover;
+                    border: none;
+                    outline: none;
+                    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+                  ">
+                </td>
+                <td valign="middle" align="left">
+                  <div class="responsive-name" style="font-size: 24px; font-weight: 600; color: #ffffff; margin-bottom: 4px; letter-spacing: -0.5px; line-height: 1.2;">
+                    Shiva Singh Nagwanshi
+                  </div>
+                  <div class="responsive-title" style="font-size: 14px; color: #a3a3a3;">
+                    Student of B.E. C.S.E. at Chitkara University                  </div>
+                </td>
+              </tr>
+            </table>
 
-                        </td>
-                      </tr>
-                    </table>
+            <!-- About Section -->
+            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top: 16px; border-collapse: collapse;">
+              <tr>
+                <td style="font-size: 14px; color: #d4d4d8; line-height: 1.6;">
+                  Building scalable solutions and modern digital experiences. Connect with me across the web.
+                </td>
+              </tr>
+            </table>
 
-                  </td>
-                </tr>
-              </table>
+            <!-- Social Links (Larger) -->
+            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top: 24px; border-collapse: collapse;">
+              <tr>
+                <td align="center">
+                  <table align="center" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse; margin: 0 auto;">
+                    <tr>
+                      <td style="padding: 0 8px;">
+                        <a href="https://shivasinghnagwanshi.indevs.in" target="_blank" style="text-decoration: none;">
+                          <img class="light-invert responsive-icon" src="https://e-signature.shivasinghnagwanshi.indevs.in/assets/icons/website-light.png" width="20" height="20" alt="website" style="display: block; border: 0;">
+                        </a>
+                      </td>
+                      <td style="padding: 0 8px;">
+                        <a href="https://www.linkedin.com/in/shivasinghnagwanshi/" target="_blank" style="text-decoration: none;">
+                          <img class="light-invert responsive-icon" src="https://e-signature.shivasinghnagwanshi.indevs.in/assets/animated/linkedin-light.gif" width="20" height="20" alt="linkedin" style="display: block; border: 0;">
+                        </a>
+                      </td>
+                      <td style="padding: 0 8px;">
+                        <a href="https://github.com/shivasinghnagwanshi" target="_blank" style="text-decoration: none;">
+                          <img class="light-invert responsive-icon" src="https://e-signature.shivasinghnagwanshi.indevs.in/assets/animated/github-light.gif" width="20" height="20" alt="github" style="display: block; border: 0;">
+                        </a>
+                      </td>
+                      <td style="padding: 0 8px;">
+                        <a href="https://x.com/xShivaSingh" target="_blank" style="text-decoration: none;">
+                          <img class="light-invert responsive-icon" src="https://e-signature.shivasinghnagwanshi.indevs.in/assets/animated/x-light.gif" width="20" height="20" alt="x" style="display: block; border: 0;">
+                        </a>
+                      </td>
+                      <td style="padding: 0 8px;">
+                        <a href="https://www.instagram.com/ShivaSinghNagwanshi" target="_blank" style="text-decoration: none;">
+                          <img class="light-invert responsive-icon" src="https://e-signature.shivasinghnagwanshi.indevs.in/assets/icons/instagram-light.png" width="20" height="20" alt="instagram" style="display: block; border: 0;">
+                        </a>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
 
+            <!-- Action Buttons -->
+            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top: 28px; border-collapse: collapse;">
+              <tr>
+                <td class="btn-stack" width="48%" align="center">
+                  <a href="https://shivasinghnagwanshi.indevs.in" target="_blank" style="
+                    display: block;
+                    background: linear-gradient(145deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.1) 100%);
+                    background-color: rgba(255,255,255,0.15);
+                    border: 1px solid rgba(255,255,255,0.3);
+                    box-shadow: inset 0 1px 2px rgba(255,255,255,0.3), 0 4px 12px rgba(0,0,0,0.1);
+                    color: #ffffff;
+                    text-decoration: none;
+                    padding: 12px;
+                    border-radius: 12px;
+                    font-size: 14px;
+                    font-weight: 600;
+                  ">
+Visit Portfolio                  </a>
+                </td>
+                <!-- Spacing for desktop -->
+                <td width="4%" style="width: 4%;"></td>
+                
+                <td class="btn-stack-last" width="48%" align="center">
+                  <a href="mailto:shivasinghnagwanshi@gmail.com" target="_blank" style="
+                    display: block;
+                    background: linear-gradient(145deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.05) 100%);
+                    background-color: rgba(255,255,255,0.1);
+                    border: 1px solid rgba(255,255,255,0.2);
+                    box-shadow: inset 0 1px 2px rgba(255,255,255,0.15), 0 4px 12px rgba(0,0,0,0.1);
+                    color: rgba(255,255,255,0.9);
+                    text-decoration: none;
+                    padding: 12px;
+                    border-radius: 12px;
+                    font-size: 14px;
+                    font-weight: 600;
+                  ">
+Email Me                  </a>
+                </td>
+              </tr>
+            </table>
 
+                </td>
+              </tr>
+            </table>
           </td>
         </tr>
       </table>
-
     </td>
   </tr>
 </table>

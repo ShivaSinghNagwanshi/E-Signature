@@ -1,4 +1,12 @@
 <style type="text/css">
+
+  u + .body .light-invert { filter: invert(1) brightness(0) !important; }
+  [data-ogsc] .light-invert { filter: invert(1) brightness(0) !important; }
+
+  @media (prefers-color-scheme: light) {
+    .light-invert { filter: invert(1) brightness(0) !important; }
+  }
+
   @media screen and (max-width: 480px) {
     .responsive-logo { width: 45px !important; min-width: 45px !important; }
     .responsive-name { font-size: 15px !important; }
@@ -20,13 +28,13 @@
           <tbody>
             <tr>
               <td align="left" valign="top" class="responsive-card-padding"
-                style="border-collapse: collapse; padding: 24px; border-radius: 16px 16px 0 0; border-bottom: none; backdrop-filter: blur(24px); {% if design.style == 'vision-os' %}background: linear-gradient(145deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.02) 100%); background-color: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); border-top: 1px solid rgba(255,255,255,0.3); box-shadow: inset 0 1px 1px rgba(255,255,255,0.2), inset 0 0 20px rgba(255,255,255,0.1);{% else %}background: linear-gradient(145deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.6) 100%); background-color: #ffffff; border: 1px solid rgba(255,255,255,0.7); border-top: 1px solid rgba(255,255,255,0.9); box-shadow: inset 0 1px 1px rgba(255,255,255,1), inset 0 0 20px rgba(255,255,255,0.6);{% endif %}">
+                style="border-collapse: collapse; padding: 24px; border-radius: 16px 16px 0 0; border-bottom: none; backdrop-filter: blur(24px); {% if design.style == 'glassmorphism' %}background: linear-gradient(145deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.02) 100%); background-color: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); border-top: 1px solid rgba(255,255,255,0.3); box-shadow: inset 0 1px 1px rgba(255,255,255,0.2), inset 0 0 20px rgba(255,255,255,0.1);{% else %}background: linear-gradient(145deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.6) 100%); background-color: #ffffff; border: 1px solid rgba(255,255,255,0.7); border-top: 1px solid rgba(255,255,255,0.9); box-shadow: inset 0 1px 1px rgba(255,255,255,1), inset 0 0 20px rgba(255,255,255,0.6);{% endif %}">
                                 <table cellpadding="0" cellspacing="0" border="0" width="100%"
                   style="border-collapse: separate; width: 100%;">
                   <tbody>
                     <tr>
                                             <td align="center" valign="middle"
-                        style="border-collapse: separate; border-radius: 14px; padding: 10px; vertical-align: middle; {% if design.style == 'vision-os' %}background: linear-gradient(180deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.05) 100%); background-color: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); box-shadow: inset 0 1px 2px rgba(255,255,255,0.2), 0 8px 20px rgba(0,0,0,0.04), 0 2px 6px rgba(0,0,0,0.02);{% else %}background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(241,245,249,0.8) 100%); background-color: #f8fafc; border: 1px solid rgba(255,255,255,0.8); box-shadow: inset 0 2px 4px rgba(255,255,255,0.9), 0 8px 20px rgba(0,0,0,0.04), 0 2px 6px rgba(0,0,0,0.02);{% endif %}">
+                        style="border-collapse: separate; border-radius: 14px; padding: 10px; vertical-align: middle; {% if design.style == 'glassmorphism' %}background: linear-gradient(180deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.05) 100%); background-color: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); box-shadow: inset 0 1px 2px rgba(255,255,255,0.2), 0 8px 20px rgba(0,0,0,0.04), 0 2px 6px rgba(0,0,0,0.02);{% else %}background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(241,245,249,0.8) 100%); background-color: #f8fafc; border: 1px solid rgba(255,255,255,0.8); box-shadow: inset 0 2px 4px rgba(255,255,255,0.9), 0 8px 20px rgba(0,0,0,0.04), 0 2px 6px rgba(0,0,0,0.02);{% endif %}">
                         <table border="0" cellspacing="0" cellpadding="0"
                           style="border-collapse: collapse;">
                           <tbody>
@@ -36,8 +44,8 @@
                               <td align="center" style="padding: {{ '4px 0 0 0' if not loop.first else '0' }};">
                                 <a href="{{ social_links[icon_key] }}" target="_blank"
                                   style="text-decoration: none; display: inline-block;">
-                                  <img alt="{{ icon_key }}"
-                                    src="{{ asset_base_url }}/{{ icon_paths[icon_key] }}"
+                                  <img class="light-invert responsive-icon" alt="{{ icon_key }}"
+                                    src="{{ asset_base_url }}/{{ icon_paths_light[icon_key] }}"
                                     width="{{ design.icon_size }}"
                                     height="{{ design.icon_size }}"
                                     style="display: block; border: 0; outline: none;">
@@ -69,14 +77,14 @@
                                             {% if assets.use_logo is not defined or assets.use_logo %}
                                             <td valign="middle" class="responsive-gap" style="padding-right: 12px; width: 1%;">
                                               <a href="{{ contact.website }}" target="_blank" style="text-decoration: none;">
-                                                <img alt="{{ personal.company }}" src="{{ asset_base_url }}/{{ logo_filename }}" width="60" class="responsive-logo" style="display: block; border: 0; outline: none; min-width: 60px;">
+                                                <img alt="{{ personal.company }}" src="{{ asset_base_url }}/{{ logo_filename_light }}" width="60" class="responsive-logo" style="display: block; border: 0; outline: none; min-width: 60px;">
                                               </a>
                                             </td>
                                             {% endif %}
                                             <td valign="middle" style="padding-left: 0;">
                                               <span class="responsive-name" style="font-weight: 800; font-style: normal; color: {{ design.text_primary }}; font-size: 18px; letter-spacing: -0.5px; font-family: {{ design.font_family }};">{{ personal.full_name }}</span>
                                               {% if verified_icon_exists %}
-                                              &nbsp;<img alt="Verified" src="{{ asset_base_url }}/{{ icon_paths['verified'] }}" width="16" height="16" style="vertical-align: text-bottom; display: inline; border: 0;">
+                                              &nbsp;<img class="light-invert" alt="Verified" src="{{ asset_base_url }}/{{ icon_paths_light['verified'] }}" width="16" height="16" style="vertical-align: text-bottom; display: inline; border: 0;">
                                               {% endif %}
                                             </td>
                                           </tr>
@@ -136,7 +144,7 @@
                                 <img alt="{{ personal.full_name }}" class="responsive-profile"
                                   src="{{ asset_base_url }}/{{ profile_filename }}"
                                   width="{{ design.profile_size }}"
-                                  {% if design.style == 'vision-os' %}
+                                  {% if design.style == 'glassmorphism' %}
                                     {% if profile_is_gif %}
                                     style="display: block; box-shadow: none; outline: none;"
                                     {% else %}
@@ -167,7 +175,7 @@
           <tbody>
             <tr>
               <td align="center"
-                style="border-radius: 0 0 16px 16px; padding: 12px 16px; backdrop-filter: blur(24px); {% if design.style == 'vision-os' %}background: linear-gradient(180deg, rgba(248,250,252,0.15) 0%, rgba(241,245,249,0.05) 100%); background-color: rgba(248,250,252,0.1); border: 1px solid rgba(255,255,255,0.15); border-top: 1px solid rgba(255,255,255,0.2);{% else %}background: linear-gradient(180deg, rgba(248,250,252,0.8) 0%, rgba(241,245,249,0.9) 100%); background-color: #f8fafc; border: 1px solid rgba(255,255,255,0.6); border-top: 1px solid rgba(226,232,240,0.6);{% endif %}">
+                style="border-radius: 0 0 16px 16px; padding: 12px 16px; backdrop-filter: blur(24px); {% if design.style == 'glassmorphism' %}background: linear-gradient(180deg, rgba(248,250,252,0.15) 0%, rgba(241,245,249,0.05) 100%); background-color: rgba(248,250,252,0.1); border: 1px solid rgba(255,255,255,0.15); border-top: 1px solid rgba(255,255,255,0.2);{% else %}background: linear-gradient(180deg, rgba(248,250,252,0.8) 0%, rgba(241,245,249,0.9) 100%); background-color: #f8fafc; border: 1px solid rgba(255,255,255,0.6); border-top: 1px solid rgba(226,232,240,0.6);{% endif %}">
                 <table align="center" cellpadding="0" cellspacing="0" border="0" style="border-collapse: separate; line-height: 0px;">
                   <tbody>
                     <tr>

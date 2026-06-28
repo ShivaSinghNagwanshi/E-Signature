@@ -1,0 +1,143 @@
+<style type="text/css">
+  @media screen and (max-width: 480px) {
+    .responsive-card { padding: 20px !important; }
+    .responsive-name { font-size: 20px !important; }
+    .responsive-title { font-size: 13px !important; }
+    .btn-stack { display: block !important; width: 100% !important; margin-bottom: 12px !important; }
+    .btn-stack-last { display: block !important; width: 100% !important; margin-bottom: 0 !important; }
+    .responsive-profile { width: 100% !important; max-width: 64px !important; height: auto !important; }
+    .responsive-icon { width: 100% !important; max-width: {{ design.icon_size }}px !important; height: auto !important; }
+  }
+  @media (prefers-color-scheme: light) {
+    .light-invert { filter: invert(1) brightness(0) !important; }
+  }
+</style>
+<table cellpadding="0" cellspacing="0" border="0" width="100%" style="font-family: {{ design.font_family }}; margin: 0 auto; max-width: 550px; border-collapse: collapse;">
+  <tr>
+    <td align="center" style="padding: 24px;">
+      
+      <!-- Card with neon glow box-shadow and fused background -->
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="
+        border-radius: 24px;
+        box-shadow: 0 0 40px rgba(163, 230, 53, 0.15), inset 0 1px 1px rgba(255,255,255,0.1);
+        border: 1px solid rgba(163, 230, 53, 0.2);
+        border-collapse: collapse;
+      ">
+        <tr>
+          <td {% if background_filename %}background="{{ asset_base_url }}/{{ background_filename }}"{% endif %} style="
+            {% if not background_filename %}background-color: #0b0b0c;{% endif %}
+            border-radius: 24px;
+            {% if background_filename %}background-image: url('{{ asset_base_url }}/{{ background_filename }}'); background-size: cover; background-position: center; background-repeat: no-repeat;{% endif %}
+          ">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;">
+              <tr>
+                <td class="responsive-card" style="padding: 32px; background-color: rgba(11, 11, 12, 0.4); border-radius: 24px;">
+            
+            <!-- Main Info -->
+            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;">
+              <tr>
+                <td width="70" valign="middle" style="width: 70px; padding-right: 16px;">
+                  <img class="responsive-profile" src="{{ asset_base_url }}/{{ profile_filename }}" width="64" height="64" alt="{{ personal.full_name }}" style="
+                    border-radius: 50%;
+                    display: block;
+                    object-fit: cover;
+                    border: none;
+                    outline: none;
+                    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+                  ">
+                </td>
+                <td valign="middle" align="left">
+                  <div class="responsive-name" style="font-size: 24px; font-weight: 600; color: #ffffff; margin-bottom: 4px; letter-spacing: -0.5px; line-height: 1.2;">
+                    {{ personal.full_name }}
+                  </div>
+                  <div class="responsive-title" style="font-size: 14px; color: #a3a3a3;">
+                    {{ personal.job_title }}{% if personal.company %} at {{ personal.company }}{% endif %}
+                  </div>
+                </td>
+              </tr>
+            </table>
+
+            {% if personal.about %}
+            <!-- About Section -->
+            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top: 16px; border-collapse: collapse;">
+              <tr>
+                <td style="font-size: 14px; color: #d4d4d8; line-height: 1.6;">
+                  {{ personal.about }}
+                </td>
+              </tr>
+            </table>
+            {% endif %}
+
+            <!-- Social Links (Larger) -->
+            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top: 24px; border-collapse: collapse;">
+              <tr>
+                <td align="center">
+                  <table align="center" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse; margin: 0 auto;">
+                    <tr>
+                      {% for icon_key in social_order %}
+                      {% if social_links.get(icon_key) %}
+                      <td style="padding: 0 8px;">
+                        <a href="{{ social_links[icon_key] }}" target="_blank" style="text-decoration: none;">
+                          <img class="light-invert responsive-icon" src="{{ asset_base_url }}/{{ icon_paths_light[icon_key] }}" width="{{ design.icon_size }}" height="{{ design.icon_size }}" alt="{{ icon_key }}" style="display: block; border: 0;">
+                        </a>
+                      </td>
+                      {% endif %}
+                      {% endfor %}
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+
+            <!-- Action Buttons -->
+            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top: 28px; border-collapse: collapse;">
+              <tr>
+                <td class="btn-stack" width="48%" align="center">
+                  <a href="{{ cta.url if cta.enabled else contact.website }}" target="_blank" style="
+                    display: block;
+                    background: linear-gradient(145deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.1) 100%);
+                    background-color: rgba(255,255,255,0.15);
+                    border: 1px solid rgba(255,255,255,0.3);
+                    box-shadow: inset 0 1px 2px rgba(255,255,255,0.3), 0 4px 12px rgba(0,0,0,0.1);
+                    color: #ffffff;
+                    text-decoration: none;
+                    padding: 12px;
+                    border-radius: 12px;
+                    font-size: 14px;
+                    font-weight: 600;
+                  ">
+                    {% if cta.enabled %}{{ cta.text }}{% else %}Visit Portfolio{% endif %}
+                  </a>
+                </td>
+                <!-- Spacing for desktop -->
+                <td width="4%" style="width: 4%;"></td>
+                
+                <td class="btn-stack-last" width="48%" align="center">
+                  <a href="{{ cta_secondary.url if cta_secondary.enabled else 'mailto:' + personal.email }}" target="_blank" style="
+                    display: block;
+                    background: linear-gradient(145deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.05) 100%);
+                    background-color: rgba(255,255,255,0.1);
+                    border: 1px solid rgba(255,255,255,0.2);
+                    box-shadow: inset 0 1px 2px rgba(255,255,255,0.15), 0 4px 12px rgba(0,0,0,0.1);
+                    color: rgba(255,255,255,0.9);
+                    text-decoration: none;
+                    padding: 12px;
+                    border-radius: 12px;
+                    font-size: 14px;
+                    font-weight: 600;
+                  ">
+                    {% if cta_secondary.enabled %}{{ cta_secondary.text }}{% else %}Email Me{% endif %}
+                  </a>
+                </td>
+              </tr>
+            </table>
+
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>

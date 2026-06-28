@@ -1,0 +1,106 @@
+<style type="text/css">
+  @media screen and (max-width: 480px) {
+    .stack-column { display: block !important; width: 100% !important; max-width: 100% !important; direction: ltr !important; }
+    .stack-img { width: 100% !important; height: auto !important; max-width: 240px !important; }
+    .desktop-overlap { margin-left: 0 !important; margin-top: -30px !important; }
+    .responsive-icon { width: 100% !important; max-width: {{ design.icon_size }}px !important; height: auto !important; }
+  }
+  @media (prefers-color-scheme: light) {
+    .light-invert { filter: invert(1) brightness(0) !important; }
+  }
+</style>
+<table cellpadding="0" cellspacing="0" border="0" width="100%" style="font-family: {{ design.font_family }}; margin: 0 auto; max-width: 600px; border-collapse: collapse;">
+  <tr>
+    <td align="center" style="padding: 24px;">
+      
+      <!-- Container Table -->
+      <table cellpadding="0" cellspacing="0" border="0" width="100%" style="max-width: 600px; border-collapse: collapse;">
+        <tr>
+          <!-- Left Column: Image -->
+          <td class="stack-column" width="240" valign="middle" align="center" style="width: 240px; text-align: center; padding: 0;">
+            <div style="position: relative; z-index: 1;">
+              <img class="stack-img" src="{{ asset_base_url }}/{{ profile_filename }}" alt="{{ personal.full_name }}" width="240" style="display: block; border: 0; outline: none; object-fit: cover; max-width: 100%;">
+            </div>
+          </td>
+
+          <!-- Right Column: Text Card Overlapping -->
+          <td class="stack-column stack-card" width="360" valign="middle" align="left" style="width: 360px; padding: 0;">
+            
+              <table class="desktop-overlap" cellpadding="0" cellspacing="0" border="0" width="100%" style="
+                margin-left: -40px; 
+                position: relative; 
+                z-index: 2;
+                border-radius: 24px;
+                overflow: hidden;
+                box-shadow: -10px 0 30px rgba(0,0,0,0.2);
+                border-collapse: collapse;
+              ">
+                <tr>
+                  <td {% if background_filename %}background="{{ asset_base_url }}/{{ background_filename }}"{% endif %} style="
+                    {% if not background_filename %}background-color: {% if design.style == 'glassmorphism' %}#1e1e2e{% else %}#ffffff{% endif %};{% endif %}
+                    {% if background_filename %}background-image: url('{{ asset_base_url }}/{{ background_filename }}'); background-size: cover; background-position: center; background-repeat: no-repeat;{% endif %}
+                  ">
+                    
+                    <table cellpadding="0" cellspacing="0" border="0" width="100%" style="border-collapse: collapse;">
+                      <tr>
+                        <td style="
+                          padding: 32px 24px;
+                          background-color: {% if design.style == 'glassmorphism' %}rgba(30, 30, 46, 0.4){% else %}rgba(255,255,255,0.6){% endif %};
+                          backdrop-filter: blur(10px);
+                          -webkit-backdrop-filter: blur(10px);
+                        ">
+                          
+                          <table cellpadding="0" cellspacing="0" border="0" width="100%" style="border-collapse: collapse;">
+                            <tr>
+                              <td style="font-size: 22px; font-weight: 700; color: {{ design.text_primary }}; padding-bottom: 8px; line-height: 28px;">
+                                {{ personal.full_name }}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td style="font-size: 13px; font-weight: 500; color: {{ design.accent_color }}; padding-bottom: 20px;">
+                                {{ personal.job_title }}{% if personal.company %} at {{ personal.company }}{% endif %}
+                              </td>
+                            </tr>
+                            {% if personal.about %}
+                            <tr>
+                              <td style="font-size: 14px; color: {% if design.style == 'glassmorphism' %}#cbd5e1{% else %}#475569{% endif %}; line-height: 1.6; padding-bottom: 24px;">
+                                {{ personal.about }}
+                              </td>
+                            </tr>
+                            {% endif %}
+                            <tr>
+                              <td>
+                                <!-- Social Icons -->
+                                <table cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;">
+                                  <tr>
+                                    {% for icon_key in social_order %}
+                                    {% if social_links.get(icon_key) %}
+                                    <td style="padding-right: 12px;">
+                                      <a href="{{ social_links[icon_key] }}" target="_blank" style="text-decoration: none;">
+                                        <img class="light-invert responsive-icon" src="{{ asset_base_url }}/{{ icon_paths_light[icon_key] }}" width="{{ design.icon_size }}" height="{{ design.icon_size }}" alt="{{ icon_key }}" style="display: block; border: 0;">
+                                      </a>
+                                    </td>
+                                    {% endif %}
+                                    {% endfor %}
+                                  </tr>
+                                </table>
+                              </td>
+                            </tr>
+                          </table>
+
+                        </td>
+                      </tr>
+                    </table>
+
+                  </td>
+                </tr>
+              </table>
+
+
+          </td>
+        </tr>
+      </table>
+
+    </td>
+  </tr>
+</table>
